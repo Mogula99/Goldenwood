@@ -39,7 +39,7 @@ namespace Goldenwood.Migrations
                     b.Property<int?>("PlayerId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("TickRedution")
+                    b.Property<int>("TickReduction")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("WoodCost")

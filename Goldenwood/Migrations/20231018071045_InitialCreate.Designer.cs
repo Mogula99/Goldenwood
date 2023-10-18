@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Goldenwood.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231018064436_InitialCreate")]
+    [Migration("20231018071045_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -42,7 +42,7 @@ namespace Goldenwood.Migrations
                     b.Property<int?>("PlayerId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("TickRedution")
+                    b.Property<int>("TickReduction")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("WoodCost")

@@ -12,6 +12,6 @@ namespace Goldenwood.Model.Building
     {
         public int GoldIncome { get; set; }
         public int WoodIncome { get; set; }
-        public int TickRedution { get; set; }
+        public int TickReduction { get; set; }
     }
 }

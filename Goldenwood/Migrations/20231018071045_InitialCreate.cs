@@ -72,7 +72,7 @@ namespace Goldenwood.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     GoldIncome = table.Column<int>(type: "INTEGER", nullable: false),
                     WoodIncome = table.Column<int>(type: "INTEGER", nullable: false),
-                    TickRedution = table.Column<int>(type: "INTEGER", nullable: false),
+                    TickReduction = table.Column<int>(type: "INTEGER", nullable: false),
                     PlayerId = table.Column<int>(type: "INTEGER", nullable: true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Level = table.Column<int>(type: "INTEGER", nullable: false),
