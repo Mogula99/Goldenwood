@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Goldenwood.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231018071045_InitialCreate")]
+    [Migration("20231019170713_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -93,6 +93,9 @@ namespace Goldenwood.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("Alive")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("ArmyId")
                         .HasColumnType("INTEGER");
 
@@ -116,13 +119,13 @@ namespace Goldenwood.Migrations
                     b.Property<int>("ArmyId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("GoldIncome")
+                    b.Property<int>("GoldAmount")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("TickInterval")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("WoodIncome")
+                    b.Property<int>("WoodAmount")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");

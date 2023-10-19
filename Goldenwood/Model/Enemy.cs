@@ -15,6 +15,7 @@ namespace Goldenwood.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool Alive { get; set; }
         public Army Army { get; set; }
     }
 }

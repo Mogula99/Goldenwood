@@ -29,6 +29,7 @@ namespace Goldenwood.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Alive = table.Column<bool>(type: "INTEGER", nullable: false),
                     ArmyId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -48,8 +49,8 @@ namespace Goldenwood.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    GoldIncome = table.Column<int>(type: "INTEGER", nullable: false),
-                    WoodIncome = table.Column<int>(type: "INTEGER", nullable: false),
+                    GoldAmount = table.Column<int>(type: "INTEGER", nullable: false),
+                    WoodAmount = table.Column<int>(type: "INTEGER", nullable: false),
                     TickInterval = table.Column<int>(type: "INTEGER", nullable: false),
                     ArmyId = table.Column<int>(type: "INTEGER", nullable: false)
                 },

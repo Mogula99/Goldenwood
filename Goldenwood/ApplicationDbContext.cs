@@ -18,7 +18,6 @@ namespace Goldenwood
         public DbSet<Enemy> Enemies { get; set; }
         public DbSet<Player> Player {  get; set; }
 
-        // TODO: Adjust the path accordingly
         protected override void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlite(@"Data Source = C:\Users\mach2\FIT\DNP\Goldenwood\Goldenwood\gamedata.db");
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
