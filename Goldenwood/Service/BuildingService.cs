@@ -1,4 +1,5 @@
 ﻿using Goldenwood.Model.Building;
+using Goldenwood.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,11 +28,12 @@ namespace Goldenwood.Service
                 //Building was found
                 if(building != null)
                 {
+                    var currentResources = resourcesService.GetCurrentResourcesAmount();
                     //Check if the player has enough resources to build the building
-                    if(resourcesService.GetCurrentGoldAmount() >= building.GoldCost && resourcesService.GetCurrentWoodAmount() >= building.WoodCost)
+                    if(currentResources.goldAmount >= building.GoldCost && currentResources.woodAmount >= building.WoodCost)
                     {
                         building.IsBuilt = true;
-                        resourcesService.AddResources(-building.GoldCost, -building.WoodCost);
+                        resourcesService.AddResources(new ResourcesRecord(-building.GoldCost, -building.WoodCost));
                         dbContext.SaveChanges();
                     }
                 }

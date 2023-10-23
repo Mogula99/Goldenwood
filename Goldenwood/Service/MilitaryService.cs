@@ -1,5 +1,6 @@
 ﻿using Goldenwood.Model;
 using Goldenwood.Model.Units;
+using Goldenwood.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -50,8 +51,9 @@ namespace Goldenwood.Service
             {
                 var goldNeeded = foundUnit.GoldCost * wantedUnitCount;
                 var woodNeeded = foundUnit.WoodCost * wantedUnitCount;
+                var currentResources = resourcesService.GetCurrentResourcesAmount();
                 //Player has enough resources to build units
-                if (resourcesService.GetCurrentGoldAmount() >= goldNeeded && resourcesService.GetCurrentWoodAmount() >= woodNeeded)
+                if (currentResources.goldAmount >= goldNeeded && currentResources.woodAmount >= woodNeeded)
                 {
                     var playersArmyId = Program.PlayerArmyId;
                     var playersArmy = dbContext.Army.Where(x => x.Id == playersArmyId).FirstOrDefault();
@@ -89,7 +91,7 @@ namespace Goldenwood.Service
                         }
 
                         //Now we have tu subtract the used resources
-                        resourcesService.AddResources(-goldNeeded, -woodNeeded);
+                        resourcesService.AddResources(new ResourcesRecord(-goldNeeded, -woodNeeded));
                         dbContext.SaveChanges();
                     }
                 }
