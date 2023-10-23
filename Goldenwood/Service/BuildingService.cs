@@ -30,7 +30,7 @@ namespace Goldenwood.Service
                 {
                     var currentResources = resourcesService.GetCurrentResourcesAmount();
                     //Check if the player has enough resources to build the building
-                    if(currentResources.goldAmount >= building.GoldCost && currentResources.woodAmount >= building.WoodCost)
+                    if(currentResources.GoldAmount >= building.GoldCost && currentResources.WoodAmount >= building.WoodCost)
                     {
                         building.IsBuilt = true;
                         resourcesService.AddResources(new ResourcesRecord(-building.GoldCost, -building.WoodCost));
@@ -46,7 +46,7 @@ namespace Goldenwood.Service
 
             //Building with specified name was not found
             //This check could be later replaced with try catch exception in controller
-            if(buildings.Count() == 0)
+            if(!buildings.Any())
             {
                 return false;
             }
@@ -70,7 +70,7 @@ namespace Goldenwood.Service
 
             //Building with specified name was not found
             //This check could be later replaced with try catch exception in controller
-            if (buildings.Count() == 0)
+            if (!buildings.Any())
             {
                 return null;
             }
@@ -83,7 +83,7 @@ namespace Goldenwood.Service
 
             //Building with specified name was not found
             //This check could be later replaced with try catch exception in controller
-            if (buildings.Count() == 0)
+            if (!buildings.Any())
             {
                 return -1;
             }
@@ -93,7 +93,7 @@ namespace Goldenwood.Service
         private IEnumerable<Building> GetBuildings(string buildingName)
         {
             var economicBuildings = dbContext.EconomicBuilding.Where(x => x.Name == buildingName).ToList() ?? Enumerable.Empty<EconomicBuilding>();
-            if (economicBuildings.Count() == 0)
+            if (!economicBuildings.Any())
             {
                 var militaryBuildings = dbContext.MilitaryBuilding.Where(x => x.Name == buildingName).ToList() ?? Enumerable.Empty<MilitaryBuilding>();
                 return militaryBuildings;

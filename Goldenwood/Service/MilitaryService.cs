@@ -13,10 +13,10 @@ namespace Goldenwood.Service
     public class MilitaryService
     {
         private ApplicationDbContext dbContext;
-        private BuildingService buildingService;
         private ResourcesService resourcesService;
+        private BuildingService buildingService;
 
-        public MilitaryService(ApplicationDbContext dbContext, BuildingService buildingService, ResourcesService resourcesService)
+        public MilitaryService(ApplicationDbContext dbContext, ResourcesService resourcesService, BuildingService buildingService)
         {
             this.dbContext = dbContext;
             this.buildingService = buildingService;
@@ -53,7 +53,7 @@ namespace Goldenwood.Service
                 var woodNeeded = foundUnit.WoodCost * wantedUnitCount;
                 var currentResources = resourcesService.GetCurrentResourcesAmount();
                 //Player has enough resources to build units
-                if (currentResources.goldAmount >= goldNeeded && currentResources.woodAmount >= woodNeeded)
+                if (currentResources.GoldAmount >= goldNeeded && currentResources.WoodAmount >= woodNeeded)
                 {
                     var playersArmyId = Constants.PlayerArmyId;
                     var playersArmy = dbContext.Army.Where(x => x.Id == playersArmyId).FirstOrDefault();
@@ -83,9 +83,7 @@ namespace Goldenwood.Service
                         //We need to create need unit group for this type of unit
                         else
                         {
-                            var newGroup = new UnitGroup();
-                            newGroup.Unit = foundUnit;
-                            newGroup.UnitCount = wantedUnitCount;
+                            var newGroup = new UnitGroup { Unit = foundUnit, UnitCount = wantedUnitCount };
                             dbContext.UnitGroup.Add(newGroup);
                             playersArmy.UnitGroups.Add(newGroup);
                         }

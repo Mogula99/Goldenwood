@@ -1,20 +1,21 @@
 ﻿using Goldenwood;
+using Goldenwood.Service;
 using Microsoft.EntityFrameworkCore;
 
 using System;
 
 namespace Goldenwood
 {
-    //TODO: Použít using na vytvoření dbContextu
-    //TODO: Přidat funkcionalitu vložení nějakých dat do DB při spuštění aplikace
-    //TODO: Zkontrolovat konzistenci camel case a 
-    //TODO: Použít Unique atributy všude kde to dává smysl
     public class Program
     {        
-        static void Main(string[] args)
+        static void Main()
         {
             Console.WriteLine("Hello, World!");
-            ApplicationDbContext dbContext = new ApplicationDbContext();
+            
+            using ApplicationDbContext dbContext = new ApplicationDbContext();
+            ResourcesService resourcesService = new ResourcesService(dbContext);
+            BuildingService buildingService = new BuildingService(dbContext, resourcesService);
+            MilitaryService militaryService = new MilitaryService(dbContext, resourcesService, buildingService);
         }
     }
 }
