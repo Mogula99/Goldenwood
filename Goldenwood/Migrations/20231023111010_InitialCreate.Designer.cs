@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Goldenwood.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231023072938_InitialCreate")]
+    [Migration("20231023111010_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -53,13 +53,16 @@ namespace Goldenwood.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EconomicBuildings");
+                    b.ToTable("EconomicBuilding");
                 });
 
             modelBuilder.Entity("Goldenwood.Model.Building.MilitaryBuilding", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CreatableUnitId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("GoldCost")
@@ -80,7 +83,9 @@ namespace Goldenwood.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MilitaryBuildings");
+                    b.HasIndex("CreatableUnitId");
+
+                    b.ToTable("MilitaryBuilding");
                 });
 
             modelBuilder.Entity("Goldenwood.Model.Enemy", b =>
@@ -103,7 +108,7 @@ namespace Goldenwood.Migrations
 
                     b.HasIndex("ArmyId");
 
-                    b.ToTable("Enemies");
+                    b.ToTable("Enemy");
                 });
 
             modelBuilder.Entity("Goldenwood.Model.Player", b =>
@@ -151,9 +156,6 @@ namespace Goldenwood.Migrations
                     b.Property<int>("GoldCost")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MilitaryBuildingId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -166,9 +168,7 @@ namespace Goldenwood.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MilitaryBuildingId");
-
-                    b.ToTable("Units");
+                    b.ToTable("Unit");
                 });
 
             modelBuilder.Entity("Goldenwood.Model.Units.UnitGroup", b =>
@@ -195,6 +195,17 @@ namespace Goldenwood.Migrations
                     b.ToTable("UnitGroup");
                 });
 
+            modelBuilder.Entity("Goldenwood.Model.Building.MilitaryBuilding", b =>
+                {
+                    b.HasOne("Goldenwood.Model.Units.Unit", "CreatableUnit")
+                        .WithMany()
+                        .HasForeignKey("CreatableUnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatableUnit");
+                });
+
             modelBuilder.Entity("Goldenwood.Model.Enemy", b =>
                 {
                     b.HasOne("Goldenwood.Model.Units.Army", "Army")
@@ -217,13 +228,6 @@ namespace Goldenwood.Migrations
                     b.Navigation("Army");
                 });
 
-            modelBuilder.Entity("Goldenwood.Model.Units.Unit", b =>
-                {
-                    b.HasOne("Goldenwood.Model.Building.MilitaryBuilding", null)
-                        .WithMany("CreatableUnits")
-                        .HasForeignKey("MilitaryBuildingId");
-                });
-
             modelBuilder.Entity("Goldenwood.Model.Units.UnitGroup", b =>
                 {
                     b.HasOne("Goldenwood.Model.Units.Army", null)
@@ -237,11 +241,6 @@ namespace Goldenwood.Migrations
                         .IsRequired();
 
                     b.Navigation("Unit");
-                });
-
-            modelBuilder.Entity("Goldenwood.Model.Building.MilitaryBuilding", b =>
-                {
-                    b.Navigation("CreatableUnits");
                 });
 
             modelBuilder.Entity("Goldenwood.Model.Units.Army", b =>

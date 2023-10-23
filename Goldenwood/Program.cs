@@ -7,10 +7,13 @@ namespace Goldenwood
 {
     //TODO: Použít using na vytvoření dbContextu
     //TODO: Přidat funkcionalitu vložení nějakých dat do DB při spuštění aplikace
+    //TODO: Zkontrolovat konzistenci camel case a 
+    //TODO: Použít Unique atributy všude kde to dává smysl
     public class Program
     {
-        public static int playerId = 1;
-        public static int playersArmyId = 1; 
+        public static int PlayerId = 1;
+        public static int PlayerArmyId = 1; 
+        
         static void Main(string[] args)
         {
             Console.WriteLine("Hello, World!");

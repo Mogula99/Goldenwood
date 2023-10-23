@@ -23,7 +23,7 @@ namespace Goldenwood.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EconomicBuildings",
+                name: "EconomicBuilding",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -39,28 +39,27 @@ namespace Goldenwood.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EconomicBuildings", x => x.Id);
+                    table.PrimaryKey("PK_EconomicBuilding", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "MilitaryBuildings",
+                name: "Unit",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    IsBuilt = table.Column<bool>(type: "INTEGER", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Level = table.Column<int>(type: "INTEGER", nullable: false),
+                    Power = table.Column<int>(type: "INTEGER", nullable: false),
                     GoldCost = table.Column<int>(type: "INTEGER", nullable: false),
                     WoodCost = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MilitaryBuildings", x => x.Id);
+                    table.PrimaryKey("PK_Unit", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Enemies",
+                name: "Enemy",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -71,9 +70,9 @@ namespace Goldenwood.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Enemies", x => x.Id);
+                    table.PrimaryKey("PK_Enemy", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Enemies_Army_ArmyId",
+                        name: "FK_Enemy_Army_ArmyId",
                         column: x => x.ArmyId,
                         principalTable: "Army",
                         principalColumn: "Id",
@@ -103,25 +102,27 @@ namespace Goldenwood.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Units",
+                name: "MilitaryBuilding",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    CreatableUnitId = table.Column<int>(type: "INTEGER", nullable: false),
+                    IsBuilt = table.Column<bool>(type: "INTEGER", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Power = table.Column<int>(type: "INTEGER", nullable: false),
+                    Level = table.Column<int>(type: "INTEGER", nullable: false),
                     GoldCost = table.Column<int>(type: "INTEGER", nullable: false),
-                    WoodCost = table.Column<int>(type: "INTEGER", nullable: false),
-                    MilitaryBuildingId = table.Column<int>(type: "INTEGER", nullable: true)
+                    WoodCost = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Units", x => x.Id);
+                    table.PrimaryKey("PK_MilitaryBuilding", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Units_MilitaryBuildings_MilitaryBuildingId",
-                        column: x => x.MilitaryBuildingId,
-                        principalTable: "MilitaryBuildings",
-                        principalColumn: "Id");
+                        name: "FK_MilitaryBuilding_Unit_CreatableUnitId",
+                        column: x => x.CreatableUnitId,
+                        principalTable: "Unit",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -143,17 +144,22 @@ namespace Goldenwood.Migrations
                         principalTable: "Army",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_UnitGroup_Units_UnitId",
+                        name: "FK_UnitGroup_Unit_UnitId",
                         column: x => x.UnitId,
-                        principalTable: "Units",
+                        principalTable: "Unit",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Enemies_ArmyId",
-                table: "Enemies",
+                name: "IX_Enemy_ArmyId",
+                table: "Enemy",
                 column: "ArmyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MilitaryBuilding_CreatableUnitId",
+                table: "MilitaryBuilding",
+                column: "CreatableUnitId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Player_ArmyId",
@@ -169,21 +175,19 @@ namespace Goldenwood.Migrations
                 name: "IX_UnitGroup_UnitId",
                 table: "UnitGroup",
                 column: "UnitId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Units_MilitaryBuildingId",
-                table: "Units",
-                column: "MilitaryBuildingId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EconomicBuildings");
+                name: "EconomicBuilding");
 
             migrationBuilder.DropTable(
-                name: "Enemies");
+                name: "Enemy");
+
+            migrationBuilder.DropTable(
+                name: "MilitaryBuilding");
 
             migrationBuilder.DropTable(
                 name: "Player");
@@ -195,10 +199,7 @@ namespace Goldenwood.Migrations
                 name: "Army");
 
             migrationBuilder.DropTable(
-                name: "Units");
-
-            migrationBuilder.DropTable(
-                name: "MilitaryBuildings");
+                name: "Unit");
         }
     }
 }

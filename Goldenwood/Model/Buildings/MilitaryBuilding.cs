@@ -6,6 +6,6 @@ namespace Goldenwood.Model.Building
 {
     public class MilitaryBuilding: Building
     {
-        public ICollection<Unit> CreatableUnits { get; set; }
+        public Unit CreatableUnit { get; set; }
     }
 }
