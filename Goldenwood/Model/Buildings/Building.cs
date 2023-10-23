@@ -13,6 +13,7 @@ namespace Goldenwood.Model.Building
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        public bool IsBuilt { get; set; }
         public string Name { get; set; }
         public int Level { get; set; }
         public int GoldCost { get; set; }

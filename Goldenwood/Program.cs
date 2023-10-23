@@ -3,14 +3,14 @@ using Microsoft.EntityFrameworkCore;
 
 using System;
 
-namespace Goldenwood // Note: actual namespace depends on the project name.
+namespace Goldenwood
 {
     //TODO: Použít using na vytvoření dbContextu
-    //TODO: Vytvořit nějakou globální konstantu na playerID
-    //TODO: Přidat funkcionalitu vložení nějakých dat do DB od spuštění aplikace
+    //TODO: Přidat funkcionalitu vložení nějakých dat do DB při spuštění aplikace
     public class Program
     {
         public static int playerId = 1;
+        public static int playersArmyId = 1; 
         static void Main(string[] args)
         {
             Console.WriteLine("Hello, World!");

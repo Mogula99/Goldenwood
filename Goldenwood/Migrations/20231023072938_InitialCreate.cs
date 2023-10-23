@@ -23,6 +23,43 @@ namespace Goldenwood.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EconomicBuildings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    GoldIncome = table.Column<int>(type: "INTEGER", nullable: false),
+                    WoodIncome = table.Column<int>(type: "INTEGER", nullable: false),
+                    TickReduction = table.Column<int>(type: "INTEGER", nullable: false),
+                    IsBuilt = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Level = table.Column<int>(type: "INTEGER", nullable: false),
+                    GoldCost = table.Column<int>(type: "INTEGER", nullable: false),
+                    WoodCost = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EconomicBuildings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MilitaryBuildings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    IsBuilt = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Level = table.Column<int>(type: "INTEGER", nullable: false),
+                    GoldCost = table.Column<int>(type: "INTEGER", nullable: false),
+                    WoodCost = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MilitaryBuildings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Enemies",
                 columns: table => new
                 {
@@ -63,53 +100,6 @@ namespace Goldenwood.Migrations
                         principalTable: "Army",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EconomicBuildings",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    GoldIncome = table.Column<int>(type: "INTEGER", nullable: false),
-                    WoodIncome = table.Column<int>(type: "INTEGER", nullable: false),
-                    TickReduction = table.Column<int>(type: "INTEGER", nullable: false),
-                    PlayerId = table.Column<int>(type: "INTEGER", nullable: true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Level = table.Column<int>(type: "INTEGER", nullable: false),
-                    GoldCost = table.Column<int>(type: "INTEGER", nullable: false),
-                    WoodCost = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EconomicBuildings", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_EconomicBuildings_Player_PlayerId",
-                        column: x => x.PlayerId,
-                        principalTable: "Player",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MilitaryBuildings",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    PlayerId = table.Column<int>(type: "INTEGER", nullable: true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Level = table.Column<int>(type: "INTEGER", nullable: false),
-                    GoldCost = table.Column<int>(type: "INTEGER", nullable: false),
-                    WoodCost = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MilitaryBuildings", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_MilitaryBuildings_Player_PlayerId",
-                        column: x => x.PlayerId,
-                        principalTable: "Player",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -161,19 +151,9 @@ namespace Goldenwood.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EconomicBuildings_PlayerId",
-                table: "EconomicBuildings",
-                column: "PlayerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Enemies_ArmyId",
                 table: "Enemies",
                 column: "ArmyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MilitaryBuildings_PlayerId",
-                table: "MilitaryBuildings",
-                column: "PlayerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Player_ArmyId",
@@ -206,19 +186,19 @@ namespace Goldenwood.Migrations
                 name: "Enemies");
 
             migrationBuilder.DropTable(
+                name: "Player");
+
+            migrationBuilder.DropTable(
                 name: "UnitGroup");
+
+            migrationBuilder.DropTable(
+                name: "Army");
 
             migrationBuilder.DropTable(
                 name: "Units");
 
             migrationBuilder.DropTable(
                 name: "MilitaryBuildings");
-
-            migrationBuilder.DropTable(
-                name: "Player");
-
-            migrationBuilder.DropTable(
-                name: "Army");
         }
     }
 }

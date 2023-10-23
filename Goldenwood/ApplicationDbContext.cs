@@ -13,7 +13,7 @@ namespace Goldenwood
     public class ApplicationDbContext : DbContext
     {
         public DbSet<EconomicBuilding> EconomicBuildings { get; set; }
-        public DbSet<MilitaryBuilding> MilitaryBuildings{ get; set; }
+        public DbSet<MilitaryBuilding> MilitaryBuildings { get; set; }
         public DbSet<Unit> Units { get; set; }
         public DbSet<Enemy> Enemies { get; set; }
         public DbSet<Player> Player {  get; set; }
@@ -22,8 +22,6 @@ namespace Goldenwood
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Player>().Navigation(e => e.Army).AutoInclude();
-            modelBuilder.Entity<Player>().Navigation(e => e.EconomicBuildings).AutoInclude();
-            modelBuilder.Entity<Player>().Navigation(e => e.MilitaryBuildings).AutoInclude();
             modelBuilder.Entity<Enemy>().Navigation(e => e.Army).AutoInclude();
             modelBuilder.Entity<Army>().Navigation(e => e.UnitGroups).AutoInclude();
             modelBuilder.Entity<UnitGroup>().Navigation(e => e.Unit).AutoInclude();

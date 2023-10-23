@@ -19,7 +19,5 @@ namespace Goldenwood.Model
         public int WoodAmount { get; set; }
         public int TickInterval { get; set; }
         public Army Army { get; set; }
-        public ICollection<EconomicBuilding> EconomicBuildings { get; set; }
-        public ICollection<MilitaryBuilding> MilitaryBuildings { get; set; }
     }
 }
