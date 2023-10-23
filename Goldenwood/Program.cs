@@ -10,10 +10,7 @@ namespace Goldenwood
     //TODO: Zkontrolovat konzistenci camel case a 
     //TODO: Použít Unique atributy všude kde to dává smysl
     public class Program
-    {
-        public static int PlayerId = 1;
-        public static int PlayerArmyId = 1; 
-        
+    {        
         static void Main(string[] args)
         {
             Console.WriteLine("Hello, World!");

@@ -37,7 +37,7 @@ namespace Goldenwood.Service
 
         public void AddResources(ResourcesRecord resourcesToAdd)
         {
-            var player = dbContext.Player.Where(x => x.Id == Program.PlayerId).FirstOrDefault();
+            var player = dbContext.Player.Where(x => x.Id == Constants.PlayerId).FirstOrDefault();
             if (player != null)
             {
                 player.GoldAmount += resourcesToAdd.goldAmount;
@@ -48,7 +48,7 @@ namespace Goldenwood.Service
 
         public void ReduceTickInterval(int reductionAmount)
         {
-            var player = dbContext.Player.Where(x => x.Id == Program.PlayerId).FirstOrDefault();
+            var player = dbContext.Player.Where(x => x.Id == Constants.PlayerId).FirstOrDefault();
             if (player != null)
             {
                 player.TickInterval -= reductionAmount;
@@ -59,25 +59,31 @@ namespace Goldenwood.Service
         //These values could be cached later
         private int GetCurrentGoldAmount()
         {
-            return dbContext.Player.Where(x => x.Id == Program.PlayerId).Select(x => x.GoldAmount).FirstOrDefault(0);
+            return dbContext.Player.Where(x => x.Id == Constants.PlayerId).Select(x => x.GoldAmount).FirstOrDefault(0);
         }
 
         //These values could be cached later
         private int GetCurrentWoodAmount()
         {
-            return dbContext.Player.Where(x => x.Id == Program.PlayerId).Select(x => x.WoodAmount).FirstOrDefault(0);
+            return dbContext.Player.Where(x => x.Id == Constants.PlayerId).Select(x => x.WoodAmount).FirstOrDefault(0);
         }
 
         //These values could be cached later
         private int GetTotalGoldIncome()
         {
-            return dbContext.EconomicBuilding.Where(x => x.IsBuilt == true).Select(x => x.GoldIncome).ToList().Sum();
+            var buildingIncome = dbContext.EconomicBuilding.Where(x => x.IsBuilt == true).Select(x => x.GoldIncome).ToList().Sum();
+            //For every defeated enemy, player will gain a bit of wood income
+            var enemyIncome = dbContext.Enemy.Where(x => x.Alive == false).ToList().Count() * Constants.DefeatedEnemyGoldIncome;
+            return buildingIncome + enemyIncome;
         }
 
         //These values could be cached later
         private int GetTotalWoodIncome()
         {
-            return dbContext.EconomicBuilding.Where(x => x.IsBuilt == true).Select(x => x.WoodIncome).ToList().Sum();
+            var buildingIncome = dbContext.EconomicBuilding.Where(x => x.IsBuilt == true).Select(x => x.WoodIncome).ToList().Sum();
+            //For every defeated enemy, player will gain a bit of wood income
+            var enemyIncome = dbContext.Enemy.Where(x => x.Alive == false).ToList().Count() * Constants.DefeatedEnemyWoodIncome;
+            return buildingIncome + enemyIncome;
         }
     }
 }

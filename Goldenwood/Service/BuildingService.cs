@@ -54,6 +54,16 @@ namespace Goldenwood.Service
             return (buildings.Where(x => !x.IsBuilt).ToList().Count > 0);
         }
 
+        public ResourcesRecord? GetNeededBuildingResources(string buildingName, int buildingLevel)
+        {
+            var building = GetBuilding(buildingName, buildingLevel);
+            if(building != null)
+            {
+                return new ResourcesRecord(building.GoldCost, building.WoodCost);
+            }
+            return null;
+        }
+
         public Building? GetBuilding(string buildingName, int buildingLevel)
         {
             var buildings = GetBuildings(buildingName);

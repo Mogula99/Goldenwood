@@ -55,7 +55,7 @@ namespace Goldenwood.Service
                 //Player has enough resources to build units
                 if (currentResources.goldAmount >= goldNeeded && currentResources.woodAmount >= woodNeeded)
                 {
-                    var playersArmyId = Program.PlayerArmyId;
+                    var playersArmyId = Constants.PlayerArmyId;
                     var playersArmy = dbContext.Army.Where(x => x.Id == playersArmyId).FirstOrDefault();
                     //Player's army was found
                     if (playersArmy != null)
@@ -104,7 +104,7 @@ namespace Goldenwood.Service
             var foundEnemy = dbContext.Enemy.Where(x => x.Id == enemyId).FirstOrDefault();
             if(foundEnemy != null)
             {
-                var playersArmy = dbContext.Army.Where(x => x.Id == Program.PlayerId).FirstOrDefault();
+                var playersArmy = dbContext.Army.Where(x => x.Id == Constants.PlayerId).FirstOrDefault();
                 if(playersArmy != null)
                 {
                     var fightResult = SimulateFight(playersArmy.UnitGroups, foundEnemy.Army.UnitGroups);
