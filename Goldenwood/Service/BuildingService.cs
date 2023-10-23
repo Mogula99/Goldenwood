@@ -25,7 +25,7 @@ namespace Goldenwood.Service
             {
                 var nextLevel = GetMaxBuiltBuildingLevel(buildingName) + 1;
                 var building = GetBuilding(buildingName, nextLevel);
-                //Building was found
+                //Building with specified level was found
                 if(building != null)
                 {
                     var currentResources = resourcesService.GetCurrentResourcesAmount();
@@ -79,15 +79,20 @@ namespace Goldenwood.Service
 
         public int GetMaxBuiltBuildingLevel(string buildingName)
         {
-            var buildings = GetBuildings(buildingName);
+            var buildings = GetBuildings(buildingName).Where(x => x.IsBuilt == true);
 
-            //Building with specified name was not found
+            //Building with specified name was not found or is not built
             //This check could be later replaced with try catch exception in controller
             if (!buildings.Any())
             {
                 return -1;
             }
             return buildings.Max(x => x.Level);
+        }
+
+        public IEnumerable<MilitaryBuilding> GetBuiltMilitaryBuildings()
+        {
+            return dbContext.MilitaryBuilding.Where(x => x.IsBuilt == true).ToList() ?? Enumerable.Empty<MilitaryBuilding>();
         }
 
         private IEnumerable<Building> GetBuildings(string buildingName)
@@ -99,11 +104,6 @@ namespace Goldenwood.Service
                 return militaryBuildings;
             }
             return economicBuildings;
-        }
-
-        public IEnumerable<MilitaryBuilding> GetBuiltMilitaryBuildings()
-        {
-            return dbContext.MilitaryBuilding.Where(x => x.IsBuilt == true).ToList() ?? Enumerable.Empty<MilitaryBuilding>();
         }
     }
 }

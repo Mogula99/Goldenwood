@@ -6,5 +6,12 @@ using System.Threading.Tasks;
 
 namespace Goldenwood.Utilities
 {
-    public record ResourcesRecord(int GoldAmount, int WoodAmount);
+    public record ResourcesRecord(int GoldAmount, int WoodAmount)
+    {
+        public static ResourcesRecord operator +(ResourcesRecord lhs, ResourcesRecord rhs)
+        {
+            return new ResourcesRecord(lhs.GoldAmount + rhs.GoldAmount, lhs.WoodAmount + rhs.WoodAmount);
+        }
+    }
+
 }

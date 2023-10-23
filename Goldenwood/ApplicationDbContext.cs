@@ -12,13 +12,13 @@ namespace Goldenwood
 {
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<EconomicBuilding> EconomicBuilding { get; set; }
-        public DbSet<MilitaryBuilding> MilitaryBuilding { get; set; }
-        public DbSet<Unit> Unit { get; set; }
-        public DbSet<UnitGroup> UnitGroup { get; set; }
-        public DbSet<Army> Army { get; set; }
-        public DbSet<Enemy> Enemy { get; set; }
-        public DbSet<Player> Player {  get; set; }
+        public virtual DbSet<EconomicBuilding> EconomicBuilding { get; set; }
+        public virtual DbSet<MilitaryBuilding> MilitaryBuilding { get; set; }
+        public virtual DbSet<Unit> Unit { get; set; }
+        public virtual DbSet<UnitGroup> UnitGroup { get; set; }
+        public virtual DbSet<Army> Army { get; set; }
+        public virtual DbSet<Enemy> Enemy { get; set; }
+        public virtual DbSet<Player> Player {  get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlite(@"Data Source = C:\Users\mach2\FIT\DNP\Goldenwood\Goldenwood\gamedata.db");
         protected override void OnModelCreating(ModelBuilder modelBuilder)

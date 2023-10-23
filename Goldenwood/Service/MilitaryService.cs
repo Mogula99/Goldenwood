@@ -61,19 +61,9 @@ namespace Goldenwood.Service
                     if (playersArmy != null)
                     {
                         var playersUnitGroups = playersArmy.UnitGroups;
-                        var found = false;
                         UnitGroup? appropriateUnitGroup = null;
                         //We are trying to find out if the player already has a group consisting of the wanted units
-                        foreach (var unitGroup in playersUnitGroups)
-                        {
-                            //Player already has unit group of this type
-                            if(unitGroup.Unit.Id == foundUnit.Id)
-                            {
-                                found = true;
-                                appropriateUnitGroup = unitGroup;
-                                break;
-                            }
-                        }
+                        var found = UnitGroupExists(foundUnit.Id, playersUnitGroups, out appropriateUnitGroup);
 
                         //We only need to increase the count of units in the unit group
                         if (found && appropriateUnitGroup != null)
@@ -84,7 +74,7 @@ namespace Goldenwood.Service
                         else
                         {
                             var newGroup = new UnitGroup { Unit = foundUnit, UnitCount = wantedUnitCount };
-                            dbContext.UnitGroup.Add(newGroup);
+                            dbContext.Add<UnitGroup>(newGroup);
                             playersArmy.UnitGroups.Add(newGroup);
                         }
 
@@ -102,7 +92,7 @@ namespace Goldenwood.Service
             var foundEnemy = dbContext.Enemy.Where(x => x.Id == enemyId).FirstOrDefault();
             if(foundEnemy != null)
             {
-                var playersArmy = dbContext.Army.Where(x => x.Id == Constants.PlayerId).FirstOrDefault();
+                var playersArmy = dbContext.Army.Where(x => x.Id == Constants.PlayerArmyId).FirstOrDefault();
                 if(playersArmy != null)
                 {
                     var fightResult = SimulateFight(playersArmy.UnitGroups, foundEnemy.Army.UnitGroups);
@@ -115,6 +105,24 @@ namespace Goldenwood.Service
                 }
             }
             return false;
+        }
+
+        //This method checks if player's army already has an unit group for a specific unit
+        private bool UnitGroupExists(int unitId, ICollection<UnitGroup> playerUnitGroups, out UnitGroup? appropriateUnitGroup)
+        {
+            bool found = false;
+            appropriateUnitGroup = null;
+            foreach (var unitGroup in playerUnitGroups)
+            {
+                //Player already has unit group of this type
+                if (unitGroup.Unit.Id == unitId)
+                {
+                    found = true;
+                    appropriateUnitGroup = unitGroup;
+                    break;
+                }
+            }
+            return found;
         }
 
         //Method returns true if the player won the fight. False otherwise.
@@ -130,7 +138,7 @@ namespace Goldenwood.Service
             }
             else
             {
-                double survivedUnitsPercentage = playerPower / 5 * enemyPower;
+                double survivedUnitsPercentage = (double) playerPower / (5 * enemyPower);
                 if (survivedUnitsPercentage > 1)
                 {
                     survivedUnitsPercentage = 1;
@@ -138,7 +146,8 @@ namespace Goldenwood.Service
 
                 foreach (var unitGroup in playerUnitGroups)
                 {
-                    unitGroup.UnitCount *= (int) survivedUnitsPercentage;
+                    var newUnitCount = unitGroup.UnitCount * survivedUnitsPercentage;
+                    unitGroup.UnitCount = (int) newUnitCount;
                 }
 
                 return true;

@@ -52,6 +52,10 @@ namespace Goldenwood.Service
             if (player != null)
             {
                 player.TickInterval -= reductionAmount;
+                if (player.TickInterval < 1)
+                {
+                    player.TickInterval = 1;
+                }
                 dbContext.SaveChanges();
             }
         }
