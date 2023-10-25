@@ -17,7 +17,6 @@ namespace Goldenwood.Model
         public int Id { get; set; }
         public int GoldAmount { get; set; }
         public int WoodAmount { get; set; }
-        public int TickInterval { get; set; }
         public Army Army { get; set; }
     }
 }

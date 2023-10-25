@@ -12,9 +12,9 @@ namespace Goldenwood.Service
 {
     public class MilitaryService
     {
-        private ApplicationDbContext dbContext;
-        private ResourcesService resourcesService;
-        private BuildingService buildingService;
+        private readonly ApplicationDbContext dbContext;
+        private readonly ResourcesService resourcesService;
+        private readonly BuildingService buildingService;
 
         public MilitaryService(ApplicationDbContext dbContext, ResourcesService resourcesService, BuildingService buildingService)
         {
@@ -105,6 +105,22 @@ namespace Goldenwood.Service
                 }
             }
             return false;
+        }
+
+        public ICollection<UnitGroup> GetEnemyUnitGroups(int enemyId)
+        {
+            var enemy = dbContext.Enemy.Where(x => x.Id == enemyId).FirstOrDefault();
+            if (enemy != null)
+            {
+                return enemy.Army == null ? new List<UnitGroup>() : enemy.Army.UnitGroups;
+            }
+            return new List<UnitGroup>();
+        }
+
+        public ICollection<UnitGroup> GetPlayerUnitGroups()
+        {
+            var playersArmy = dbContext.Army.Where(x => x.Id == Constants.PlayerArmyId).FirstOrDefault();
+            return playersArmy == null ? new List<UnitGroup>() : playersArmy.UnitGroups;
         }
 
         //This method checks if player's army already has an unit group for a specific unit

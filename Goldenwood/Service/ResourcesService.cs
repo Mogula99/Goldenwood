@@ -9,7 +9,8 @@ namespace Goldenwood.Service
 {
     public class ResourcesService
     {
-        private ApplicationDbContext dbContext;
+        private readonly ApplicationDbContext dbContext;
+        private int tickInterval = 10;
 
         public ResourcesService(ApplicationDbContext dbContext)
         {
@@ -46,30 +47,25 @@ namespace Goldenwood.Service
             }
         }
 
-        public void ReduceTickInterval(int reductionAmount)
+        //TODO: Add tests for this method
+        public int GetTickInterval()
         {
-            var player = dbContext.Player.Where(x => x.Id == Constants.PlayerId).FirstOrDefault();
-            if (player != null)
-            {
-                player.TickInterval -= reductionAmount;
-                if (player.TickInterval < 1)
-                {
-                    player.TickInterval = 1;
-                }
-                dbContext.SaveChanges();
-            }
+            int tickReduction = dbContext.EconomicBuilding.Where(x => x.IsBuilt == true).Select(x => x.TickReduction).ToList().Sum();
+            return (tickInterval - tickReduction);
         }
 
         //These values could be cached later
         private int GetCurrentGoldAmount()
         {
-            return dbContext.Player.Where(x => x.Id == Constants.PlayerId).Select(x => x.GoldAmount).FirstOrDefault(0);
+            var player = dbContext.Player.Where(x => x.Id == Constants.PlayerId).FirstOrDefault();
+            return player == null ? 0 : player.GoldAmount;
         }
 
         //These values could be cached later
         private int GetCurrentWoodAmount()
         {
-            return dbContext.Player.Where(x => x.Id == Constants.PlayerId).Select(x => x.WoodAmount).FirstOrDefault(0);
+            var player = dbContext.Player.Where(x => x.Id == Constants.PlayerId).FirstOrDefault();
+            return player == null ? 0 : player.WoodAmount;
         }
 
         //These values could be cached later

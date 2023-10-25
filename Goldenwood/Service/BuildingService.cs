@@ -10,8 +10,8 @@ namespace Goldenwood.Service
 {
     public class BuildingService
     {
-        private ApplicationDbContext dbContext;
-        private ResourcesService resourcesService;
+        private readonly ApplicationDbContext dbContext;
+        private readonly ResourcesService resourcesService;
 
         public BuildingService(ApplicationDbContext dbContext, ResourcesService resourcesService)
         {
@@ -19,8 +19,9 @@ namespace Goldenwood.Service
             this.resourcesService = resourcesService;
         }
 
-        public void BuildOrUpgrade(string buildingName)
+        public bool BuildOrUpgrade(string buildingName)
         {
+            var result = false;
             if (IsBuildable(buildingName))
             {
                 var nextLevel = GetMaxBuiltBuildingLevel(buildingName) + 1;
@@ -33,11 +34,13 @@ namespace Goldenwood.Service
                     if(currentResources.GoldAmount >= building.GoldCost && currentResources.WoodAmount >= building.WoodCost)
                     {
                         building.IsBuilt = true;
+                        result = true;
                         resourcesService.AddResources(new ResourcesRecord(-building.GoldCost, -building.WoodCost));
                         dbContext.SaveChanges();
                     }
                 }
             }
+            return result;
         }
 
         public bool IsBuildable(string buildingName)
@@ -54,14 +57,14 @@ namespace Goldenwood.Service
             return (buildings.Where(x => !x.IsBuilt).ToList().Count > 0);
         }
 
-        public ResourcesRecord? GetNeededBuildingResources(string buildingName, int buildingLevel)
+        public ResourcesRecord GetNeededBuildingResources(string buildingName, int buildingLevel)
         {
             var building = GetBuilding(buildingName, buildingLevel);
             if(building != null)
             {
                 return new ResourcesRecord(building.GoldCost, building.WoodCost);
             }
-            return null;
+            return new ResourcesRecord(0, 0);
         }
 
         public Building? GetBuilding(string buildingName, int buildingLevel)
