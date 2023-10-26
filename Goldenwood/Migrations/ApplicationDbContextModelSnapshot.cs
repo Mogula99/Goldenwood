@@ -120,9 +120,6 @@ namespace Goldenwood.Migrations
                     b.Property<int>("GoldAmount")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("TickInterval")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("WoodAmount")
                         .HasColumnType("INTEGER");
 

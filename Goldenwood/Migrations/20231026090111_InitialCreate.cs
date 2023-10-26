@@ -87,7 +87,6 @@ namespace Goldenwood.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     GoldAmount = table.Column<int>(type: "INTEGER", nullable: false),
                     WoodAmount = table.Column<int>(type: "INTEGER", nullable: false),
-                    TickInterval = table.Column<int>(type: "INTEGER", nullable: false),
                     ArmyId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
