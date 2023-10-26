@@ -29,14 +29,14 @@ namespace GoldenwoodApi.Controllers
         }
 
         [HttpGet("Recruit")]
-        public bool CanBeRecruited(string unitName)
+        public bool CanBeRecruited(int unitId)
         {
-            return militaryService.CanBeRecruited(unitName);
+            return militaryService.CanBeRecruited(unitId);
         }
 
         [HttpPost("Recruit")]
-        public ICollection<UnitGroup> Recruit(string unitName, int recruitCount) {
-            militaryService.RecruitUnits(unitName, recruitCount);
+        public ICollection<UnitGroup> Recruit(int unitId, int recruitCount) {
+            militaryService.RecruitUnits(unitId, recruitCount);
             return militaryService.GetPlayerUnitGroups();
         }
 

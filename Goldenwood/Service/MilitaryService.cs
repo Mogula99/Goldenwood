@@ -23,29 +23,24 @@ namespace Goldenwood.Service
             this.resourcesService = resourcesService;
         }
 
-        public bool CanBeRecruited(string unitName)
+        public bool CanBeRecruited(int unitId)
         {
-            var foundUnit = dbContext.Unit.Where(x => x.Name == unitName).FirstOrDefault();
             var found = false;
-            if(foundUnit != null)
+            var militaryBuildings = buildingService.GetBuiltMilitaryBuildings();
+            foreach (var militaryBuilding in militaryBuildings)
             {
-                var unitId = foundUnit.Id;
-                var militaryBuildings = buildingService.GetBuiltMilitaryBuildings();
-                foreach (var militaryBuilding in militaryBuildings)
+                if (militaryBuilding.CreatableUnit.Id == unitId)
                 {
-                    if (militaryBuilding.CreatableUnit.Id == unitId)
-                    {
-                        found = true;
-                        break;
-                    }
+                    found = true;
+                    break;
                 }
             }
             return found;
         }
 
-        public void RecruitUnits(string wantedUnitName, int wantedUnitCount)
+        public void RecruitUnits(int wantedUnitId, int wantedUnitCount)
         {
-            var foundUnit = dbContext.Unit.Where(x => x.Name == wantedUnitName).FirstOrDefault();
+            var foundUnit = dbContext.Unit.Where(x => x.Id == wantedUnitId).FirstOrDefault();
             //Wanted unit was found
             if (foundUnit != null)
             {
@@ -90,7 +85,7 @@ namespace Goldenwood.Service
         public bool Fight(int enemyId)
         {
             var foundEnemy = dbContext.Enemy.Where(x => x.Id == enemyId).FirstOrDefault();
-            if(foundEnemy != null)
+            if(foundEnemy != null && foundEnemy.Alive == true)
             {
                 var playersArmy = dbContext.Army.Where(x => x.Id == Constants.PlayerArmyId).FirstOrDefault();
                 if(playersArmy != null)
@@ -154,6 +149,7 @@ namespace Goldenwood.Service
             }
             else
             {
+                enemyUnitGroups.Clear();
                 double survivedUnitsPercentage = (double) playerPower / (5 * enemyPower);
                 if (survivedUnitsPercentage > 1)
                 {

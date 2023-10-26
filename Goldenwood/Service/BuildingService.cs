@@ -88,7 +88,7 @@ namespace Goldenwood.Service
             //This check could be later replaced with try catch exception in controller
             if (!buildings.Any())
             {
-                return -1;
+                return 0;
             }
             return buildings.Max(x => x.Level);
         }
