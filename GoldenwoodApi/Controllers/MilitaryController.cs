@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GoldenwoodApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class MilitaryController : ControllerBase
     {
