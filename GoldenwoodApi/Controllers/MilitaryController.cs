@@ -5,12 +5,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GoldenwoodApi.Controllers
 {
+    /// <summary>
+    /// This controller is responsible for handling all the military oriented stuff like recruiting units and fighting enemies.
+    /// </summary>
     [Route("[controller]")]
     [ApiController]
     public class MilitaryController : ControllerBase
     {
         private MilitaryService militaryService;
 
+        /// <summary>
+        /// This is a constructor for the Military controller.
+        /// </summary>
+        /// <param name="militaryService">Military service instance</param>
         public MilitaryController(MilitaryService militaryService)
         {
             this.militaryService = militaryService;

@@ -4,11 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GoldenwoodApi.Controllers
 {
+    /// <summary>
+    /// This controller is responsible for handling actions related to the player's resources. It can return or increase their amount.
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class ResourcesController : ControllerBase {
         private ResourcesService resourcesService;
 
+        /// <summary>
+        /// This is a constructor for ResourcesController
+        /// </summary>
+        /// <param name="resourcesService">Resources service instance</param>
         public ResourcesController(ResourcesService resourcesService)
         {
             this.resourcesService = resourcesService;

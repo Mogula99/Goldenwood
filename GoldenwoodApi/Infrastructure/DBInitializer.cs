@@ -5,8 +5,15 @@ using Goldenwood.Model.Units;
 
 namespace GoldenwoodApi.Infrastructure
 {
+    /// <summary>
+    /// This class seeds data into database. It provides some starting data when the application is launched.
+    /// </summary>
     public static class DBInitializer
     {
+        /// <summary>
+        /// This method defines and inserts data into DB when the application is launched.
+        /// </summary>
+        /// <param name="applicationBuilder">Application builder instance</param>
         public static void Seed(IApplicationBuilder applicationBuilder)
         {
             var unitTypes = new List<Unit>

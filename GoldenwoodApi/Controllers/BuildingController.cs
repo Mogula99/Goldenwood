@@ -5,12 +5,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GoldenwoodApi.Controllers
 {
+    /// <summary>
+    /// This controller is responsible for building oriented business logic. It can return specific building or build/upgrade buildings.
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class BuildingController : ControllerBase
     {
         private BuildingService buildingService;
 
+        /// <summary>
+        /// This is a constructor for the Building controller
+        /// </summary>
+        /// <param name="buildingService">Building service instance</param>
         public BuildingController(BuildingService buildingService)
         {
             this.buildingService = buildingService;
