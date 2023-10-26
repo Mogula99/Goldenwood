@@ -5,9 +5,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 
-//TODO: Napsat testy pro nové business metody
-//TODO: Spíš než pomocí jména by to chtìlo jednotky/budovy identifikovat IDèkem
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
