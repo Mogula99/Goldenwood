@@ -1,5 +1,9 @@
 using Goldenwood;
 using Goldenwood.Service;
+using GoldenwoodApi.Infrastructure;
+using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 //TODO: Napsat testy pro nové business metody
 //TODO: Spíš než pomocí jména by to chtìlo jednotky/budovy identifikovat IDèkem
@@ -11,11 +15,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options => {
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "Goldenwood API",
+        Description = "API for the Goldenwood game"
+});
+// using System.Reflection;
+var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+});
 builder.Services.AddSingleton<ResourcesService, ResourcesService>();
 builder.Services.AddSingleton<BuildingService, BuildingService>();
 builder.Services.AddSingleton<MilitaryService, MilitaryService>();
-builder.Services.AddSingleton<ApplicationDbContext>();
+builder.Services.AddSingleton<ApplicationDbContext, ApplicationInMemoryDbContext>();
 
 
 var app = builder.Build();
@@ -32,5 +46,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+DBInitializer.Seed(app);
 app.Run();
