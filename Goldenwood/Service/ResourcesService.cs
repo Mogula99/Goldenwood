@@ -10,7 +10,6 @@ namespace Goldenwood.Service
     public class ResourcesService
     {
         private readonly ApplicationDbContext dbContext;
-        private int tickInterval = 10;
 
         public ResourcesService(ApplicationDbContext dbContext)
         {
@@ -51,7 +50,7 @@ namespace Goldenwood.Service
         public int GetTickInterval()
         {
             int tickReduction = dbContext.EconomicBuilding.Where(x => x.IsBuilt == true).Select(x => x.TickReduction).ToList().Sum();
-            return (tickInterval - tickReduction);
+            return (Constants.TickInterval - tickReduction);
         }
 
         //These values could be cached later

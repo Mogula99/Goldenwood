@@ -127,58 +127,13 @@ namespace GoldenwoodTests.Service
             Assert.Equal(expectedResources.WoodAmount, playerMock.Object.FirstOrDefault().WoodAmount);
         }
 
-        [Fact]
-        public void ReduceTickIntervalTest()
-        {
-            //Asking for a tick interval reduction
-            var dbContextMock = new Mock<ApplicationDbContext>();
-            var playerMock = GetPlayerMock();
-            dbContextMock.Setup(m => m.Player).Returns(playerMock.Object);
-
-            var resourcesService = new ResourcesService(dbContextMock.Object);
-            resourcesService.ReduceTickInterval(1);
-
-            dbContextMock.Verify(m => m.SaveChanges(), Times.Once());
-            Assert.Equal(9, playerMock.Object.FirstOrDefault().TickInterval);
-        }
-
-        [Fact]
-        public void ReduceTickIntervalTest2()
-        {
-            //Asking for a tick interval reduction which could possibly reduce the interval below 0 seconds
-            var dbContextMock = new Mock<ApplicationDbContext>();
-            var playerMock = GetPlayerMock();
-            dbContextMock.Setup(m => m.Player).Returns(playerMock.Object);
-
-            var resourcesService = new ResourcesService(dbContextMock.Object);
-            resourcesService.ReduceTickInterval(1000);
-
-            dbContextMock.Verify(m => m.SaveChanges(), Times.Once());
-            Assert.Equal(1, playerMock.Object.FirstOrDefault().TickInterval);
-        }
-
-        [Fact]
-        public void ReduceTickIntervalTest3()
-        {
-            //Asking to reduce tick interval by 0
-            var dbContextMock = new Mock<ApplicationDbContext>();
-            var playerMock = GetPlayerMock();
-            dbContextMock.Setup(m => m.Player).Returns(playerMock.Object);
-
-            var resourcesService = new ResourcesService(dbContextMock.Object);
-            resourcesService.ReduceTickInterval(0);
-
-            dbContextMock.Verify(m => m.SaveChanges(), Times.Once());
-            Assert.Equal(10, playerMock.Object.FirstOrDefault().TickInterval);
-        }
-
         //Helper methods
 
         private Mock<DbSet<Player>> GetPlayerMock()
         {
             var data = new List<Player>
             {
-                new Player { Id = Constants.PlayerId, Army = null, GoldAmount = 123, TickInterval = 10, WoodAmount = 45},
+                new Player { Id = Constants.PlayerId, Army = null, GoldAmount = 123, WoodAmount = 45},
             }.AsQueryable();
 
             var mockSet = new Mock<DbSet<Player>>();

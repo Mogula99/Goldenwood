@@ -30,7 +30,7 @@ namespace GoldenwoodTests.Service
             var buildingService = new BuildingService(dbContextMock.Object, resourcesService);
             var militaryService = new MilitaryService(dbContextMock.Object, resourcesService, buildingService);
 
-            Assert.False(militaryService.CanBeRecruited("AAAAAA"));
+            Assert.False(militaryService.CanBeRecruited(20));
         }
 
         [Fact]
@@ -47,7 +47,7 @@ namespace GoldenwoodTests.Service
             var buildingService = new BuildingService(dbContextMock.Object, resourcesService);
             var militaryService = new MilitaryService(dbContextMock.Object, resourcesService, buildingService);
 
-            Assert.False(militaryService.CanBeRecruited("Archer"));
+            Assert.False(militaryService.CanBeRecruited(3));
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace GoldenwoodTests.Service
             var buildingService = new BuildingService(dbContextMock.Object, resourcesService);
             var militaryService = new MilitaryService(dbContextMock.Object, resourcesService, buildingService);
 
-            Assert.True(militaryService.CanBeRecruited("Spearman"));
+            Assert.True(militaryService.CanBeRecruited(1));
         }
 
         [Fact]
@@ -80,7 +80,7 @@ namespace GoldenwoodTests.Service
             var buildingService = new BuildingService(dbContextMock.Object, resourcesService);
             var militaryService = new MilitaryService(dbContextMock.Object, resourcesService, buildingService);
 
-            militaryService.RecruitUnits("Something non-existing", 150);
+            militaryService.RecruitUnits(666, 150);
             Assert.Equal(2, weakPlayerMock.Object.FirstOrDefault().Army.UnitGroups.Count);
             Assert.Equal(0, weakPlayerMock.Object.FirstOrDefault().Army.UnitGroups.Sum(x => x.UnitCount));
             Assert.Equal(1000, weakPlayerMock.Object.FirstOrDefault().GoldAmount);
@@ -101,7 +101,7 @@ namespace GoldenwoodTests.Service
             var buildingService = new BuildingService(dbContextMock.Object, resourcesService);
             var militaryService = new MilitaryService(dbContextMock.Object, resourcesService, buildingService);
 
-            militaryService.RecruitUnits("Spearman", 1000);
+            militaryService.RecruitUnits(1, 1000);
             Assert.Equal(2, weakPlayerMock.Object.FirstOrDefault().Army.UnitGroups.Count);
             Assert.Equal(0, weakPlayerMock.Object.FirstOrDefault().Army.UnitGroups.Sum(x => x.UnitCount));
             Assert.Equal(1000, weakPlayerMock.Object.FirstOrDefault().GoldAmount);
@@ -123,7 +123,7 @@ namespace GoldenwoodTests.Service
             var buildingService = new BuildingService(dbContextMock.Object, resourcesService);
             var militaryService = new MilitaryService(dbContextMock.Object, resourcesService, buildingService);
 
-            militaryService.RecruitUnits("Spearman", 10);
+            militaryService.RecruitUnits(1, 10);
             Assert.Equal(2, weakPlayerMock.Object.FirstOrDefault().Army.UnitGroups.Count);
             Assert.Equal(10, weakPlayerMock.Object.FirstOrDefault().Army.UnitGroups.Sum(x => x.UnitCount));
             Assert.Equal(10, weakPlayerMock.Object.FirstOrDefault().Army.UnitGroups.ToArray()[0].UnitCount);
@@ -147,7 +147,8 @@ namespace GoldenwoodTests.Service
             var buildingService = new BuildingService(dbContextMock.Object, resourcesService);
             var militaryService = new MilitaryService(dbContextMock.Object, resourcesService, buildingService);
 
-            militaryService.RecruitUnits("Horseman", 1);
+            Assert.Equal(2, weakPlayerMock.Object.FirstOrDefault().Army.UnitGroups.Count);
+            militaryService.RecruitUnits(5, 1);
             Assert.Equal(3, weakPlayerMock.Object.FirstOrDefault().Army.UnitGroups.Count);
             Assert.Equal(1, weakPlayerMock.Object.FirstOrDefault().Army.UnitGroups.Sum(x => x.UnitCount));
             Assert.Equal(1, weakPlayerMock.Object.FirstOrDefault().Army.UnitGroups.ToArray()[2].UnitCount);
@@ -248,7 +249,7 @@ namespace GoldenwoodTests.Service
             {
                 new Unit { Id = 1, Name = "Spearman", Power = 10, GoldCost = 10, WoodCost = 10},
                 new Unit { Id = 2, Name = "Archer", Power = 100, GoldCost = 100, WoodCost = 100},
-                new Unit { Id = 3, Name = "Horseman", Power = 1000, GoldCost = 1000, WoodCost = 1000},
+                new Unit { Id = 5, Name = "Horseman", Power = 1000, GoldCost = 1000, WoodCost = 1000},
 
             }.AsQueryable();
 
@@ -271,7 +272,7 @@ namespace GoldenwoodTests.Service
 
             var data = new List<Player>
             {
-                new Player { Id = Constants.PlayerId, Army = playerArmy, GoldAmount = 1000, TickInterval = 10, WoodAmount = 1000},
+                new Player { Id = Constants.PlayerId, Army = playerArmy, GoldAmount = 1000, WoodAmount = 1000},
             }.AsQueryable();
 
             var mockSet = new Mock<DbSet<Player>>();
@@ -293,7 +294,7 @@ namespace GoldenwoodTests.Service
 
             var data = new List<Player>
             {
-                new Player { Id = Constants.PlayerId, Army = playerArmy, GoldAmount = 123, TickInterval = 10, WoodAmount = 45},
+                new Player { Id = Constants.PlayerId, Army = playerArmy, GoldAmount = 123, WoodAmount = 45},
             }.AsQueryable();
 
             var mockSet = new Mock<DbSet<Player>>();
@@ -315,7 +316,7 @@ namespace GoldenwoodTests.Service
 
             var data = new List<Player>
             {
-                new Player { Id = Constants.PlayerId, Army = playerArmy, GoldAmount = 123, TickInterval = 10, WoodAmount = 45},
+                new Player { Id = Constants.PlayerId, Army = playerArmy, GoldAmount = 123, WoodAmount = 45},
             }.AsQueryable();
 
             var mockSet = new Mock<DbSet<Player>>();

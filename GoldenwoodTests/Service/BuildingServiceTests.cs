@@ -89,7 +89,7 @@ namespace GoldenwoodTests.Service
             var buildingService = new BuildingService(dbContextMock.Object, resourcesService);
 
             var result = buildingService.GetMaxBuiltBuildingLevel("Name of a building that does not exist");
-            Assert.Equal(-1, result);
+            Assert.Equal(0, result);
         }
 
         [Fact]
@@ -200,11 +200,15 @@ namespace GoldenwoodTests.Service
             dbContextMock.Setup(m => m.MilitaryBuilding).Returns(GetMilitaryBuildingsMock().Object);
             dbContextMock.Setup(m => m.EconomicBuilding).Returns(GetEconomicBuildingsMock().Object);
 
+            var expectedResult = new ResourcesRecord(0, 0);
+
             var resourcesService = new ResourcesService(dbContextMock.Object);
             var buildingService = new BuildingService(dbContextMock.Object, resourcesService);
 
             var result = buildingService.GetNeededBuildingResources("Name of a building that does not exist", 762);
-            Assert.Null(result);
+            //TODO: I could define equality operator for ResourcesRecord to make this more simpler
+            Assert.Equal(expectedResult.GoldAmount, result.GoldAmount);
+            Assert.Equal(expectedResult.WoodAmount, result.WoodAmount);
         }
 
         [Fact]
@@ -215,11 +219,14 @@ namespace GoldenwoodTests.Service
             dbContextMock.Setup(m => m.MilitaryBuilding).Returns(GetMilitaryBuildingsMock().Object);
             dbContextMock.Setup(m => m.EconomicBuilding).Returns(GetEconomicBuildingsMock().Object);
 
+            var expectedResult = new ResourcesRecord(0, 0);
+
             var resourcesService = new ResourcesService(dbContextMock.Object);
             var buildingService = new BuildingService(dbContextMock.Object, resourcesService);
 
             var result = buildingService.GetNeededBuildingResources("Dlog Enim", -250);
-            Assert.Null(result);
+            Assert.Equal(expectedResult.GoldAmount, result.GoldAmount);
+            Assert.Equal(expectedResult.WoodAmount, result.WoodAmount);
         }
 
         [Fact]
@@ -373,7 +380,7 @@ namespace GoldenwoodTests.Service
         {
             var data = new List<Player>
             {
-                new Player { Id = Constants.PlayerId, Army = null, GoldAmount = 1, TickInterval = 10, WoodAmount = 2},
+                new Player { Id = Constants.PlayerId, Army = null, GoldAmount = 1, WoodAmount = 2},
             }.AsQueryable();
 
             var mockSet = new Mock<DbSet<Player>>();
