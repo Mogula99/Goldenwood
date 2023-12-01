@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GoldenwoodClient.MapPage"
+             Title="MapPage"
+             xmlns:viewmodels="clr-namespace:GoldenwoodClient.ViewModels"
+             x:DataType="viewmodels:MapVm">
+    <VerticalStackLayout Spacing="100">
+        <HorizontalStackLayout Spacing="50"
+                               HorizontalOptions="Center" 
+                               VerticalOptions="Start"
+                               BackgroundColor="Black">
+            <Button Text="Outskirts"
+                    Command="{Binding GoToSurroundingsCommand}"></Button>
+            <Button Text="Village"
+                    Command="{Binding GoToVillageCommand}"></Button>
+            <Button Text="Map" Style="{StaticResource currentPageButton}"></Button>
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>

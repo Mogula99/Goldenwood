@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GoldenwoodClient.VillagePage"
+             Title="VillagePage"
+             xmlns:viewmodels="clr-namespace:GoldenwoodClient.ViewModels"
+             x:DataType="viewmodels:VillageVm">
+    <VerticalStackLayout Spacing="100">
+        <HorizontalStackLayout Spacing="50"
+                               HorizontalOptions="Center" 
+                               VerticalOptions="Start"
+                               BackgroundColor="Black">
+            <Button Text="Surroundings"
+                    Command="{Binding GoToSurroundingsCommand}"></Button>
+            <Button Text="Village" Style="{StaticResource currentPageButton}"></Button>
+            <Button Text="Map"
+                    Command="{Binding GoToMapCommand}"></Button>
+        </HorizontalStackLayout>
+        <Button Text="Tick" Command="{Binding TickCommand}"></Button>
+    </VerticalStackLayout>
+</ContentPage>
