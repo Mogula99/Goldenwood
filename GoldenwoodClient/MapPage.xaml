@@ -29,11 +29,22 @@
         </HorizontalStackLayout>
 
         <HorizontalStackLayout>
-            <Button BackgroundColor="Green" Text="Green enemy"></Button>
-            <Button BackgroundColor="Yellow" Text="Yellow enemy"></Button>
-            <Button BackgroundColor="Orange" Text="Orange enemy"></Button>
-            <Button BackgroundColor="Red" Text="Red enemy"></Button>
-            <Button BackgroundColor="DarkGrey" Text="Black enemy"></Button>
+            <Button BackgroundColor="Green"
+                    Text="Green enemy"
+                    Command="{Binding FightEnemyCommand}"
+                    CommandParameter="1"></Button>
+            <Button BackgroundColor="Yellow" Text="Yellow enemy"                   
+                    Command="{Binding FightEnemyCommand}"
+                    CommandParameter="2"></Button>
+            <Button BackgroundColor="Orange" Text="Orange enemy"                    
+                    Command="{Binding FightEnemyCommand}"
+                    CommandParameter="3"></Button>
+            <Button BackgroundColor="Red" Text="Red enemy"                    
+                    Command="{Binding FightEnemyCommand}"
+                    CommandParameter="4"></Button>
+            <Button BackgroundColor="DarkGrey" Text="Black enemy"                    
+                    Command="{Binding FightEnemyCommand}"
+                    CommandParameter="5"></Button>
         </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

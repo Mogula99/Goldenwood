@@ -1,5 +1,6 @@
 ﻿using GoldenwoodClient.ExternalApis;
 using GoldenwoodClient.Infrastructure;
+using GoldenwoodClient.Utilities;
 using GoldenwoodClient.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -37,16 +38,21 @@ namespace GoldenwoodClient
             var resourcesApi = RestService.For<IResourcesApi>(baseUrl);
             builder.Services.AddSingleton(resourcesApi);
 
+            var buildingApi = RestService.For<IBuildingApi>(baseUrl);
+            builder.Services.AddSingleton(buildingApi);
+
             builder.Services.AddSingleton<UnitGroupConverter>();
             builder.Services.AddSingleton<ResourcesRecordConverter>();
 
+            builder.Services.AddSingleton<AlertManager>();
+            builder.Services.AddSingleton<BuildingManager>();
+            builder.Services.AddSingleton<MilitaryManager>();
 
+            builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddSingleton<MainVm>();
 
-            builder.Services.AddTransient<VillagePage>();
-            builder.Services.AddTransient<VillageVm>();
-
-            builder.Services.AddTransient<MainPage>();
-            builder.Services.AddTransient<MainVm>();
+            builder.Services.AddSingleton<VillagePage>();
+            builder.Services.AddSingleton<VillageVm>();
 
             builder.Services.AddSingleton<MapPage>();
             builder.Services.AddSingleton<MapVm>();

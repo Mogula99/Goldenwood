@@ -30,15 +30,36 @@
 
 
         <!-- Village center -->
-        <VerticalStackLayout>
+        <VerticalStackLayout Spacing="20">
             <HorizontalStackLayout>
-                <Button Text="Mayor's House" Grid.Row="0" Grid.Column="0"></Button>
-                <Button Text="Church" Grid.Row="0" Grid.Column="1"></Button>
+                <Button Text="Mayor's House"
+                        Command="{Binding BuildOrUpgradeCommand}"
+                        CommandParameter="{Binding MayorHouseName}"></Button>
+                <Button Text="Church"
+                        Command="{Binding BuildOrUpgradeCommand}"
+                        CommandParameter="{Binding ChurchName}"></Button>
             </HorizontalStackLayout>
             <HorizontalStackLayout>
-                <Button Text="Well" Grid.Row="1" Grid.Column="0"></Button>
-                <Button Text="Bakery" Grid.Row="1" Grid.Column="1"></Button>
-                <Button Text="Farm" Grid.Row="1" Grid.Column="2"></Button>
+                <Button Text="Well"
+                        Command="{Binding BuildOrUpgradeCommand}"
+                        CommandParameter="{Binding WellName}"></Button>
+                <Button Text="Bakery"
+                        Command="{Binding BuildOrUpgradeCommand}"
+                        CommandParameter="{Binding BakeryName}"></Button>
+                <Button Text="Farm"
+                        Command="{Binding BuildOrUpgradeCommand}"
+                        CommandParameter="{Binding FarmName}"></Button>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout>
+                <Button Text="Barracks"
+                        Command="{Binding BuildOrUpgradeCommand}"
+                        CommandParameter="{Binding BarracksName}"></Button>
+                <Button Text="Archery Range"
+                        Command="{Binding BuildOrUpgradeCommand}"
+                        CommandParameter="{Binding ArcheryRangeName}"></Button>
+                <Button Text="Stables"
+                        Command="{Binding BuildOrUpgradeCommand}"
+                        CommandParameter="{Binding StablesName}"></Button>
             </HorizontalStackLayout>
         </VerticalStackLayout>
         

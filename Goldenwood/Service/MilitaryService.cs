@@ -144,7 +144,10 @@ namespace Goldenwood.Service
 
             if(playerPower <= enemyPower)
             {
-                playerUnitGroups.Clear();
+                foreach (var unitGroup in playerUnitGroups)
+                {
+                    unitGroup.UnitCount = 0;
+                }
                 return false;
             }
             else

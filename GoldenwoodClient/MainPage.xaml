@@ -43,8 +43,12 @@ xmlns:shared="clr-namespace:GoldenwoodClient">
             <!-- Mine, woodcutter and the village -->
             <VerticalStackLayout>
                 <HorizontalStackLayout>
-                    <Button Text="Gold Mine"></Button>
-                    <Button Text="Woodcutter's camp"></Button>
+                    <Button Text="Gold Mine"
+                            Command="{Binding BuildOrUpgradeCommand}"
+                            CommandParameter="{Binding GoldMineName}"></Button>
+                    <Button Text="Woodcutter's camp"
+                            Command="{Binding BuildOrUpgradeCommand}"
+                            CommandParameter="{Binding LoggingCampName}"></Button>
                 </HorizontalStackLayout>
                 <Button HorizontalOptions="Start"
                    HeightRequest="500"
@@ -77,28 +81,52 @@ xmlns:shared="clr-namespace:GoldenwoodClient">
                 <!-- Military overview -->
                 <VerticalStackLayout HorizontalOptions="End">
                     <HorizontalStackLayout BackgroundColor="Red" Spacing="5">
-                        <Label Text="Spearmen"></Label>
+                        <Label Text="{Binding UnitNames[0]}"></Label>
                         <Label Text="{Binding PlayerUnitGroups[0].UnitCount}"></Label>
+                        <Button Text="Plus"
+                                IsVisible="{Binding IsUnitRecruitable[0]}"
+                                Command="{Binding RecruitUnitsCommand}"
+                                CommandParameter="1"></Button>
                     </HorizontalStackLayout>
                     <HorizontalStackLayout BackgroundColor="Red" Spacing="5">
-                        <Label Text="Armoured Spearmen"></Label>
+                        <Label Text="{Binding UnitNames[1]}"></Label>
                         <Label Text="{Binding PlayerUnitGroups[1].UnitCount}"></Label>
+                        <Button Text="Plus"
+                                IsVisible="{Binding IsUnitRecruitable[1]}"
+                                Command="{Binding RecruitUnitsCommand}"
+                                CommandParameter="2"></Button>
                     </HorizontalStackLayout>
                     <HorizontalStackLayout BackgroundColor="Red" Spacing="5">
-                        <Label Text="Archers"></Label>
+                        <Label Text="{Binding UnitNames[2]}"></Label>
                         <Label Text="{Binding PlayerUnitGroups[2].UnitCount}"></Label>
+                        <Button Text="Plus"
+                                IsVisible="{Binding IsUnitRecruitable[2]}"
+                                Command="{Binding RecruitUnitsCommand}"
+                                CommandParameter="3"></Button>
                     </HorizontalStackLayout>
                     <HorizontalStackLayout BackgroundColor="Red" Spacing="5">
-                        <Label Text="Crossbowmen"></Label>
+                        <Label Text="{Binding UnitNames[3]}"></Label>
                         <Label Text="{Binding PlayerUnitGroups[3].UnitCount}"></Label>
+                        <Button Text="Plus"
+                                IsVisible="{Binding IsUnitRecruitable[3]}"
+                                Command="{Binding RecruitUnitsCommand}"
+                                CommandParameter="4"></Button>
                     </HorizontalStackLayout>
                     <HorizontalStackLayout BackgroundColor="Red" Spacing="5">
-                        <Label Text="Horsemen"></Label>
+                        <Label Text="{Binding UnitNames[4]}"></Label>
                         <Label Text="{Binding PlayerUnitGroups[4].UnitCount}"></Label>
+                        <Button Text="Plus"
+                                IsVisible="{Binding IsUnitRecruitable[4]}"
+                                Command="{Binding RecruitUnitsCommand}"
+                                CommandParameter="5"></Button>
                     </HorizontalStackLayout>
                     <HorizontalStackLayout BackgroundColor="Red" Spacing="5">
-                        <Label Text="Heavy Horsemen"></Label>
+                        <Label Text="{Binding UnitNames[5]}"></Label>
                         <Label Text="{Binding PlayerUnitGroups[5].UnitCount}"></Label>
+                        <Button Text="Plus"
+                                IsVisible="{Binding IsUnitRecruitable[5]}"
+                                Command="{Binding RecruitUnitsCommand}"
+                                CommandParameter="6"></Button>
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
             </VerticalStackLayout>

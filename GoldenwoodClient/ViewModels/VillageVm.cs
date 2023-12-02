@@ -3,6 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using GoldenwoodClient.ExternalApis;
 using GoldenwoodClient.Infrastructure;
 using GoldenwoodClient.Models;
+using GoldenwoodClient.Utilities;
+using Goldenwood.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,17 +19,33 @@ namespace GoldenwoodClient.ViewModels
 
         private readonly ResourcesRecordConverter resourcesRecordConverter;
 
-        [ObservableProperty] private ResourcesRecord playerResources = new ResourcesRecord();
+        private readonly BuildingManager buildingManager;
 
-        public VillageVm(IResourcesApi resourcesApi, ResourcesRecordConverter resourcesRecordConverter)
+        public string MayorHouseName { get; set; } = Constants.MayorBuildingName;
+        public string ChurchName { get; set; } = Constants.ChurchBuildingName;
+        public string WellName { get; set; } = Constants.WellBuildingName;
+        public string BakeryName { get; set; } = Constants.BakeryBuildingName;
+        public string FarmName { get; set; } = Constants.FarmBuildingName;
+        public string BarracksName { get; set; } = Constants.BarracksBuildingName;
+        public string ArcheryRangeName { get; set; } = Constants.ArcheryRangeBuildingName;
+        public string StablesName { get; set; } = Constants.StablesBuildingName;
+
+
+        [ObservableProperty] private GoldenwoodClient.Models.ResourcesRecord playerResources = new GoldenwoodClient.Models.ResourcesRecord();
+
+        public VillageVm(IResourcesApi resourcesApi, ResourcesRecordConverter resourcesRecordConverter, BuildingManager buildingManager)
         {
             this.resourcesApi = resourcesApi;
+            
             this.resourcesRecordConverter = resourcesRecordConverter;
+
+            this.buildingManager = buildingManager;
 
             var timer = Application.Current.Dispatcher.CreateTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += (s, e) => DoSomething();
+            timer.Tick += (s, e) => LoadDataAsync();
             timer.Start();
+
             LoadDataAsync();
         }
 
@@ -63,8 +81,10 @@ namespace GoldenwoodClient.ViewModels
                 await LoadDataAsync();
         }
 
-        private void DoSomething()
+        [RelayCommand]
+        async void BuildOrUpgrade(string buildingName)
         {
+            await buildingManager.BuildOrUpgrade(buildingName);
             LoadDataAsync();
         }
     }
