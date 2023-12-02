@@ -11,10 +11,9 @@ using System.Threading.Tasks;
 
 namespace GoldenwoodClient.ViewModels
 {
-    public partial class VillageVm : ObservableObject
+    public partial class VillageVm : ObservableObject, IQueryAttributable
     {
         private readonly IResourcesApi resourcesApi;
-
 
         private readonly ResourcesRecordConverter resourcesRecordConverter;
 
@@ -25,6 +24,10 @@ namespace GoldenwoodClient.ViewModels
             this.resourcesApi = resourcesApi;
             this.resourcesRecordConverter = resourcesRecordConverter;
 
+            var timer = Application.Current.Dispatcher.CreateTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += (s, e) => DoSomething();
+            timer.Start();
             LoadDataAsync();
         }
 
@@ -52,6 +55,17 @@ namespace GoldenwoodClient.ViewModels
         async Task GoToMap()
         {
             await Shell.Current.GoToAsync(nameof(MapPage), new Dictionary<string, object> { { "Reload", true } });
+        }
+
+        public async void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query["Reload"] is bool and true)
+                await LoadDataAsync();
+        }
+
+        private void DoSomething()
+        {
+            LoadDataAsync();
         }
     }
 }

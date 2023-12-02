@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace GoldenwoodClient.ViewModels
 {
-    public partial class MapVm : ObservableObject
+    public partial class MapVm : ObservableObject, IQueryAttributable
     {
         private readonly IResourcesApi resourcesApi;
 
@@ -43,6 +43,12 @@ namespace GoldenwoodClient.ViewModels
         async Task GoToSurroundings()
         {
             await Shell.Current.GoToAsync("//" + nameof(MainPage), new Dictionary<string, object> { { "Reload", true } });
+        }
+
+        public async void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query["Reload"] is bool and true)
+                await LoadDataAsync();
         }
     }
 }

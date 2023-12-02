@@ -20,6 +20,8 @@ namespace GoldenwoodClient.ViewModels
         private readonly UnitGroupConverter unitGroupConverter;
         private readonly ResourcesRecordConverter resourcesRecordConverter;
 
+        [ObservableProperty] private int secondsToTick = 10;
+
         [ObservableProperty] private ObservableCollection<UnitGroup> playerUnitGroups;
         [ObservableProperty] private ResourcesRecord playerResources = new ResourcesRecord();
         [ObservableProperty] private ResourcesRecord resourcesIncome = new ResourcesRecord();
@@ -30,6 +32,11 @@ namespace GoldenwoodClient.ViewModels
             this.resourcesApi = resourcesApi;
             this.resourcesRecordConverter = resourcesRecordConverter;
             this.unitGroupConverter = unitGroupConverter;
+
+            var timer = Application.Current.Dispatcher.CreateTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += (s, e) => DoSomething(timer);
+            timer.Start();
             // Run in Fire & Forget manner
             LoadDataAsync();
         }
@@ -51,19 +58,30 @@ namespace GoldenwoodClient.ViewModels
         [RelayCommand]
         async Task GoToVillage()
         {
-            await Shell.Current.GoToAsync(nameof(VillagePage), new Dictionary<string, object> { });
+            await Shell.Current.GoToAsync(nameof(VillagePage), new Dictionary<string, object> { { "Reload", true } });
         }
 
         [RelayCommand]
         async Task GoToMap()
         {
-            await Shell.Current.GoToAsync(nameof(MapPage), new Dictionary<string, object> { });
+            await Shell.Current.GoToAsync(nameof(MapPage), new Dictionary<string, object> { { "Reload", true } });
         }
 
         public async void ApplyQueryAttributes(IDictionary<string, object> query)
         {
             if (query["Reload"] is bool and true)
                 await LoadDataAsync();
+        }
+
+        private async void DoSomething(IDispatcherTimer timer)
+        {
+            SecondsToTick -= 1;
+            if(SecondsToTick <= 0)
+            {
+                await resourcesApi.UpdateResourcesAfterTick();
+                SecondsToTick = 10;
+                LoadDataAsync();
+            }
         }
     }
 }

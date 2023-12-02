@@ -40,11 +40,13 @@ namespace GoldenwoodClient
             builder.Services.AddSingleton<UnitGroupConverter>();
             builder.Services.AddSingleton<ResourcesRecordConverter>();
 
-            builder.Services.AddSingleton<MainPage>();
-            builder.Services.AddSingleton<MainVm>();
 
-            builder.Services.AddSingleton<VillagePage>();
-            builder.Services.AddSingleton<VillageVm>();
+
+            builder.Services.AddTransient<VillagePage>();
+            builder.Services.AddTransient<VillageVm>();
+
+            builder.Services.AddTransient<MainPage>();
+            builder.Services.AddTransient<MainVm>();
 
             builder.Services.AddSingleton<MapPage>();
             builder.Services.AddSingleton<MapVm>();

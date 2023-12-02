@@ -60,7 +60,7 @@ xmlns:shared="clr-namespace:GoldenwoodClient">
                 <VerticalStackLayout>
                     <HorizontalStackLayout>
                         <Label Text="Tick in: "></Label>
-                        <Label Text="TODO"></Label>
+                        <Label Text="{Binding SecondsToTick}"></Label>
                     </HorizontalStackLayout>
                     <HorizontalStackLayout>
                         <Label Text="Gold: "></Label>
