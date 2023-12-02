@@ -16,10 +16,13 @@ namespace GoldenwoodClient.ViewModels
     {
         private readonly IMilitaryApi militaryApi;
         private readonly IResourcesApi resourcesApi;
+
         private readonly UnitGroupConverter unitGroupConverter;
         private readonly ResourcesRecordConverter resourcesRecordConverter;
+
         [ObservableProperty] private ObservableCollection<UnitGroup> playerUnitGroups;
-        [ObservableProperty] private ResourcesRecord playerResources = new ResourcesRecord { GoldAmount = 12, WoodAmount=24 };
+        [ObservableProperty] private ResourcesRecord playerResources = new ResourcesRecord();
+        [ObservableProperty] private ResourcesRecord resourcesIncome = new ResourcesRecord();
 
         public MainVm(IMilitaryApi militaryApi, UnitGroupConverter unitGroupConverter, IResourcesApi resourcesApi, ResourcesRecordConverter resourcesRecordConverter)
         {
@@ -40,7 +43,9 @@ namespace GoldenwoodClient.ViewModels
 
             var playerResourcesFromApi = await resourcesApi.GetAmount();
             PlayerResources = resourcesRecordConverter.CoreResourcesRecordToMauiResourcesRecord(playerResourcesFromApi);
-            Console.WriteLine("Přišli mi data z apička, uživatel má počet zlata " + playerResources.GoldAmount);
+
+            var resourcesIncomeFromApi = await resourcesApi.GetIncome();
+            ResourcesIncome = resourcesRecordConverter.CoreResourcesRecordToMauiResourcesRecord(resourcesIncomeFromApi);
         }
 
         [RelayCommand]

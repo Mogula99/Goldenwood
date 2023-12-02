@@ -6,16 +6,42 @@
              xmlns:viewmodels="clr-namespace:GoldenwoodClient.ViewModels"
              x:DataType="viewmodels:VillageVm">
     <VerticalStackLayout Spacing="100">
+        <!-- Top Navigation bar -->
         <HorizontalStackLayout Spacing="50"
                                HorizontalOptions="Center" 
                                VerticalOptions="Start"
-                               BackgroundColor="Black">
+                               BackgroundColor="DarkGrey">
+            <VerticalStackLayout Spacing="10">
+                <HorizontalStackLayout Spacing="5">
+                    <Label Text="Gold: "></Label>
+                    <Label Text="{Binding PlayerResources.GoldAmount}"></Label>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="Wood: "></Label>
+                    <Label Text="{Binding PlayerResources.WoodAmount}"></Label>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
             <Button Text="Surroundings"
                     Command="{Binding GoToSurroundingsCommand}"></Button>
             <Button Text="Village" Style="{StaticResource currentPageButton}"></Button>
             <Button Text="Map"
                     Command="{Binding GoToMapCommand}"></Button>
         </HorizontalStackLayout>
+
+
+        <!-- Village center -->
+        <VerticalStackLayout>
+            <HorizontalStackLayout>
+                <Button Text="Mayor's House" Grid.Row="0" Grid.Column="0"></Button>
+                <Button Text="Church" Grid.Row="0" Grid.Column="1"></Button>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout>
+                <Button Text="Well" Grid.Row="1" Grid.Column="0"></Button>
+                <Button Text="Bakery" Grid.Row="1" Grid.Column="1"></Button>
+                <Button Text="Farm" Grid.Row="1" Grid.Column="2"></Button>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+        
         <Button Text="Tick" Command="{Binding TickCommand}"></Button>
     </VerticalStackLayout>
 </ContentPage>

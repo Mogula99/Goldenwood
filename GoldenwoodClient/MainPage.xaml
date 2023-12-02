@@ -13,10 +13,21 @@ xmlns:shared="clr-namespace:GoldenwoodClient">
         <x:String x:Key="VillageString">Village</x:String>
     </ContentPage.Resources>
     <VerticalStackLayout Spacing="100">
+        <!-- Top Navigation bar -->
         <HorizontalStackLayout Spacing="50"
                                HorizontalOptions="Center" 
                                VerticalOptions="Start"
-                               BackgroundColor="Black">
+                               BackgroundColor="DarkGrey">
+            <VerticalStackLayout Spacing="10">
+                <HorizontalStackLayout Spacing="5">
+                    <Label Text="Gold: "></Label>
+                    <Label Text="{Binding PlayerResources.GoldAmount}"></Label>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="Wood: "></Label>
+                    <Label Text="{Binding PlayerResources.WoodAmount}"></Label>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
             <Button Text="Surroundings" Style="{StaticResource currentPageButton}"></Button>
             <Button Text="{StaticResource Key=VillageString}"
                     TextColor="{StaticResource PageTextColor}"
@@ -25,18 +36,73 @@ xmlns:shared="clr-namespace:GoldenwoodClient">
                     Command="{Binding GoToMapCommand}">
             </Button>
         </HorizontalStackLayout>
-        
+
+        <!-- Surroundings -->
         <HorizontalStackLayout VerticalOptions="Center" BackgroundColor="Green">
-            <Label HorizontalOptions="Start" HeightRequest="500" WidthRequest="500" Text="Village Picture" BackgroundColor="Blue"></Label>
-            
-            <VerticalStackLayout WidthRequest="100" HeightRequest="400" HorizontalOptions="End">
-                <HorizontalStackLayout BackgroundColor="Red" Spacing="5">
-                    <Label Text="{Binding PlayerResources.GoldAmount}"></Label>
-                    <Label Text="42"></Label>
-                    <Label Text="Pikemen"></Label>
-                    <Label Text="{Binding PlayerUnitGroups[0].UnitCount}"></Label>
+
+            <!-- Mine, woodcutter and the village -->
+            <VerticalStackLayout>
+                <HorizontalStackLayout>
+                    <Button Text="Gold Mine"></Button>
+                    <Button Text="Woodcutter's camp"></Button>
                 </HorizontalStackLayout>
+                <Button HorizontalOptions="Start"
+                   HeightRequest="500"
+                   WidthRequest="500"
+                   Text="Village"
+                   BackgroundColor="Blue"
+                   Command="{Binding GoToVillageCommand}"></Button>
             </VerticalStackLayout>
+
+            <!-- Right panel -->
+            <VerticalStackLayout>
+                <!-- Ticks and resources income -->
+                <VerticalStackLayout>
+                    <HorizontalStackLayout>
+                        <Label Text="Tick in: "></Label>
+                        <Label Text="TODO"></Label>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout>
+                        <Label Text="Gold: "></Label>
+                        <Label Text="{Binding ResourcesIncome.GoldAmount}"></Label>
+                        <Label Text="/tick"></Label>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout>
+                        <Label Text="Wood: "></Label>
+                        <Label Text="{Binding ResourcesIncome.WoodAmount}"></Label>
+                        <Label Text="/tick"></Label>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- Military overview -->
+                <VerticalStackLayout HorizontalOptions="End">
+                    <HorizontalStackLayout BackgroundColor="Red" Spacing="5">
+                        <Label Text="Spearmen"></Label>
+                        <Label Text="{Binding PlayerUnitGroups[0].UnitCount}"></Label>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout BackgroundColor="Red" Spacing="5">
+                        <Label Text="Armoured Spearmen"></Label>
+                        <Label Text="{Binding PlayerUnitGroups[1].UnitCount}"></Label>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout BackgroundColor="Red" Spacing="5">
+                        <Label Text="Archers"></Label>
+                        <Label Text="{Binding PlayerUnitGroups[2].UnitCount}"></Label>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout BackgroundColor="Red" Spacing="5">
+                        <Label Text="Crossbowmen"></Label>
+                        <Label Text="{Binding PlayerUnitGroups[3].UnitCount}"></Label>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout BackgroundColor="Red" Spacing="5">
+                        <Label Text="Horsemen"></Label>
+                        <Label Text="{Binding PlayerUnitGroups[4].UnitCount}"></Label>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout BackgroundColor="Red" Spacing="5">
+                        <Label Text="Heavy Horsemen"></Label>
+                        <Label Text="{Binding PlayerUnitGroups[5].UnitCount}"></Label>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+
         </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

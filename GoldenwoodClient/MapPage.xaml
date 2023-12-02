@@ -6,15 +6,34 @@
              xmlns:viewmodels="clr-namespace:GoldenwoodClient.ViewModels"
              x:DataType="viewmodels:MapVm">
     <VerticalStackLayout Spacing="100">
+        <!-- Top Navigation bar -->
         <HorizontalStackLayout Spacing="50"
                                HorizontalOptions="Center" 
                                VerticalOptions="Start"
-                               BackgroundColor="Black">
-            <Button Text="Outskirts"
+                               BackgroundColor="DarkGrey">
+            <VerticalStackLayout Spacing="10">
+                <HorizontalStackLayout Spacing="5">
+                    <Label Text="Gold: "></Label>
+                    <Label Text="{Binding PlayerResources.GoldAmount}"></Label>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="Wood: "></Label>
+                    <Label Text="{Binding PlayerResources.WoodAmount}"></Label>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+            <Button Text="Surroundings"
                     Command="{Binding GoToSurroundingsCommand}"></Button>
             <Button Text="Village"
                     Command="{Binding GoToVillageCommand}"></Button>
             <Button Text="Map" Style="{StaticResource currentPageButton}"></Button>
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout>
+            <Button BackgroundColor="Green" Text="Green enemy"></Button>
+            <Button BackgroundColor="Yellow" Text="Yellow enemy"></Button>
+            <Button BackgroundColor="Orange" Text="Orange enemy"></Button>
+            <Button BackgroundColor="Red" Text="Red enemy"></Button>
+            <Button BackgroundColor="DarkGrey" Text="Black enemy"></Button>
         </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>
