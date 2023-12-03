@@ -26,6 +26,11 @@ namespace GoldenwoodClient.Utilities
             this.alertManager = alertManager;
         }
 
+        /// <summary>
+        /// This method handles building/upgrading of buildings. It checks if it can be done and then calls appropriate API methods. 
+        /// </summary>
+        /// <param name="buildingName">Name of the building to be build/upgraded</param>
+        /// <returns>Nothing</returns>
         public async Task BuildOrUpgrade(string buildingName)
         {
             bool canBeUpgraded = await buildingApi.GetIsBuildable(buildingName);

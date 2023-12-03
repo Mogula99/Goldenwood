@@ -161,7 +161,8 @@
                 </VerticalStackLayout>
             </HorizontalStackLayout>
         </VerticalStackLayout>
-        
+
+        <!-- Kinda hidden tick button (used for cheating) -->
         <Button Text="Tick" Command="{Binding TickCommand}"></Button>
     </VerticalStackLayout>
 </ContentPage>

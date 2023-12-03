@@ -19,7 +19,6 @@ namespace GoldenwoodClient.ViewModels
     public partial class MainVm : ObservableObject, IQueryAttributable
     {
         private readonly IResourcesApi resourcesApi;
-        private readonly IBuildingApi buildingApi;
         private readonly IMilitaryApi militaryApi;
 
         private readonly UnitGroupConverter unitGroupConverter;
@@ -28,8 +27,7 @@ namespace GoldenwoodClient.ViewModels
         private readonly BuildingManager buildingManager;
         private readonly MilitaryManager militaryManager;
 
-        private ICollection<int> unitIds = new List<int> {1, 2, 3, 4, 5, 6};
-
+        //These properties are used for binding in the MainPage.xaml
         public string GoldMineName { get; set; } = Constants.GoldMineBuildingName;
         public string LoggingCampName { get; set; } = Constants.LoggingCampBuildingName;
         public List<string> UnitNames { get; set; } = Constants.UnitNames;
@@ -37,22 +35,22 @@ namespace GoldenwoodClient.ViewModels
         [ObservableProperty] private int secondsToTick = 10;
         [ObservableProperty] private int tickInterval = 10;
 
-        [ObservableProperty] private ObservableCollection<UnitGroup> playerUnitGroups;
-        [ObservableProperty] private ObservableCollection<bool> isUnitRecruitable;
+        [ObservableProperty] private ObservableCollection<UnitGroup> playerUnitGroups = new ObservableCollection<UnitGroup>();
+        [ObservableProperty] private ObservableCollection<bool> isUnitRecruitable = new ObservableCollection<bool>();
 
         [ObservableProperty] private GoldenwoodClient.Models.ResourcesRecord playerResources = new GoldenwoodClient.Models.ResourcesRecord();
         [ObservableProperty] private GoldenwoodClient.Models.ResourcesRecord resourcesIncome = new GoldenwoodClient.Models.ResourcesRecord();
 
-        public MainVm(IMilitaryApi militaryApi, UnitGroupConverter unitGroupConverter, IResourcesApi resourcesApi, ResourcesRecordConverter resourcesRecordConverter, IBuildingApi buildingApi, BuildingManager buildingManager, MilitaryManager militaryManager)
+        public MainVm(IMilitaryApi militaryApi, UnitGroupConverter unitGroupConverter, IResourcesApi resourcesApi, ResourcesRecordConverter resourcesRecordConverter, BuildingManager buildingManager, MilitaryManager militaryManager)
         {
             this.resourcesApi = resourcesApi;
-            this.buildingApi = buildingApi;
             this.militaryApi = militaryApi;
 
             this.resourcesRecordConverter = resourcesRecordConverter;
             this.unitGroupConverter = unitGroupConverter;
 
             this.buildingManager = buildingManager;
+            this.militaryManager = militaryManager;
 
             //Set ticking timer
             var timer = Application.Current.Dispatcher.CreateTimer();
@@ -62,9 +60,12 @@ namespace GoldenwoodClient.ViewModels
 
             // Run in Fire & Forget manner
             LoadDataAsync();
-            this.militaryManager = militaryManager;
         }
 
+        /// <summary>
+        /// This method refreshes all the data that updates in the MainPage.
+        /// </summary>
+        /// <returns>Nothing</returns>
         public async Task LoadDataAsync()
         {
             var unitGroupsFromApi = await militaryApi.PlayerUnits();
@@ -72,7 +73,7 @@ namespace GoldenwoodClient.ViewModels
             PlayerUnitGroups = new ObservableCollection<UnitGroup>(unitGroups);
 
             List<bool> isUnitRecruitable = new List<bool> { false, false, false, false, false, false };
-            foreach (int unitId in unitIds)
+            foreach (int unitId in Constants.UnitIds)
             {
                 isUnitRecruitable[unitId-1] = await militaryApi.CanBeRecruited(unitId);
             }
@@ -87,12 +88,19 @@ namespace GoldenwoodClient.ViewModels
             ResourcesIncome = resourcesRecordConverter.CoreResourcesRecordToMauiResourcesRecord(resourcesIncomeFromApi);
         }
 
+        /// <summary>
+        /// This method checks if the Reload query has been added when switching to the MainPage. If so, it refreshes all the data in the page.
+        /// </summary>
+        /// <param name="query">Queries sent when switching to the MainPage</param>
         public async void ApplyQueryAttributes(IDictionary<string, object> query)
         {
             if (query["Reload"] is bool and true)
                 await LoadDataAsync();
         }
 
+        /// <summary>
+        /// This method processes one tick of the timer.
+        /// </summary>
         private async void ProcessTick()
         {
             SecondsToTick -= 1;
@@ -106,18 +114,31 @@ namespace GoldenwoodClient.ViewModels
 
         //Commands
 
+        /// <summary>
+        /// This command changes the current page to the VillagePage.
+        /// </summary>
+        /// <returns>Nothing</returns>
         [RelayCommand]
         async Task GoToVillage()
         {
             await Shell.Current.GoToAsync(nameof(VillagePage), new Dictionary<string, object> { { "Reload", true } });
         }
 
+        /// <summary>
+        /// This command changes the current page to the MapPage.
+        /// </summary>
+        /// <returns>Nothing</returns>
         [RelayCommand]
         async Task GoToMap()
         {
             await Shell.Current.GoToAsync(nameof(MapPage), new Dictionary<string, object> { { "Reload", true } });
         }
 
+        /// <summary>
+        /// This command calls appropriate methods when the player clicks a building.
+        /// </summary>
+        /// <param name="buildingName">Name of the building the player clicked at</param>
+        /// <returns>Nothing</returns>
         [RelayCommand]
         async Task BuildOrUpgrade(string buildingName)
         {
@@ -125,6 +146,11 @@ namespace GoldenwoodClient.ViewModels
             await LoadDataAsync();
         }
 
+        /// <summary>
+        /// This command calls appropriate methods when the player wants to recruit a unit.
+        /// </summary>
+        /// <param name="unitIdString">String of the unitID of the unit that the player clicked at.</param>
+        /// <returns>Nothing</returns>
         [RelayCommand]
         async Task RecruitUnits(string unitIdString)
         {

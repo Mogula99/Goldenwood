@@ -42,11 +42,12 @@ BackgroundColor="LightGreen">
                     Command="{Binding GoToMapCommand}">
                 </Button>
             </HorizontalStackLayout>
-
         </HorizontalStackLayout>
 
         <!-- Surroundings -->
-        <HorizontalStackLayout VerticalOptions="Start" Spacing="100">
+        <HorizontalStackLayout VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               Spacing="100">
             <!-- Mine, woodcutter and the village -->
             <VerticalStackLayout HorizontalOptions="Start">
                 <HorizontalStackLayout Spacing="250">

@@ -43,6 +43,7 @@ namespace Goldenwood.Utilities
         public static readonly string StablesBuildingName = "Stables";
 
         public static readonly List<string> UnitNames = new List<string> { "Spearmen", "Armoured Spearmen", "Archers", "Crossbowmen", "Horsemen", "Heavy Horsemen" };
+        public static readonly List<int> UnitIds = new List<int> { 1, 2, 3, 4, 5, 6 };
         public static readonly List<string> EnemyNames = new List<string> { FirstEnemyName, SecondEnemyName, ThirdEnemyName, FourthEnemyName, FifthEnemyName };
     }
 }

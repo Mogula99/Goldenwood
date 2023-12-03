@@ -21,6 +21,7 @@ namespace GoldenwoodClient.ViewModels
 
         private readonly BuildingManager buildingManager;
 
+        //These properties are used in VillagePage.xaml
         public string MayorHouseName { get; set; } = Constants.MayorBuildingName;
         public string ChurchName { get; set; } = Constants.ChurchBuildingName;
         public string WellName { get; set; } = Constants.WellBuildingName;
@@ -49,13 +50,32 @@ namespace GoldenwoodClient.ViewModels
             LoadDataAsync();
         }
 
+        /// <summary>
+        /// This method refreshes all the data that updates in the VillagePage.
+        /// </summary>
+        /// <returns>Nothing</returns>
         public async Task LoadDataAsync()
         {
             var playerResourcesFromApi = await resourcesApi.GetAmount();
             PlayerResources = resourcesRecordConverter.CoreResourcesRecordToMauiResourcesRecord(playerResourcesFromApi);
         }
 
+        /// <summary>
+        /// This method checks if the Reload query has been added when switching to the VillagePage. If so, it refreshes all the data in the page.
+        /// </summary>
+        /// <param name="query">Queries sent when switching to the VillagePage</param>
+        public async void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query["Reload"] is bool and true)
+                await LoadDataAsync();
+        }
 
+        //Commands
+
+        /// <summary>
+        /// This command handles the situation when the player clicks on the "hidden" Tick button.
+        /// </summary>
+        /// <returns>Nothing</returns>
         [RelayCommand]
         async Task Tick()
         {
@@ -63,24 +83,31 @@ namespace GoldenwoodClient.ViewModels
             await LoadDataAsync();
         }
 
+        /// <summary>
+        /// This command changes the current page to the MainPage.
+        /// </summary>
+        /// <returns>Nothing</returns>
         [RelayCommand]
         async Task GoToSurroundings()
         {
             await Shell.Current.GoToAsync("//" + nameof(MainPage), new Dictionary<string, object> { { "Reload", true } });
         }
 
+        /// <summary>
+        /// This command changes the current page to the MapPage.
+        /// </summary>
+        /// <returns>Nothing</returns>
         [RelayCommand]
         async Task GoToMap()
         {
             await Shell.Current.GoToAsync(nameof(MapPage), new Dictionary<string, object> { { "Reload", true } });
         }
 
-        public async void ApplyQueryAttributes(IDictionary<string, object> query)
-        {
-            if (query["Reload"] is bool and true)
-                await LoadDataAsync();
-        }
-
+        /// <summary>
+        /// This command calls appropriate methods when the player clicks a building.
+        /// </summary>
+        /// <param name="buildingName">Name of the building the player clicked at</param>
+        /// <returns>Nothing</returns>
         [RelayCommand]
         async Task BuildOrUpgrade(string buildingName)
         {

@@ -9,6 +9,11 @@ namespace GoldenwoodClient.Infrastructure
 {
     public class UnitGroupConverter
     {
+        /// <summary>
+        /// This method is used for converting UnitGroup objects from GoldenwoodClient project to Goldenwood project
+        /// </summary>
+        /// <param name="unitGroup">GoldenwoodClient's UnitGroup</param>
+        /// <returns>An equivalent instance of the Goldenwood's UnitGroup</returns>
         public Goldenwood.Model.Units.UnitGroup MauiUnitGroupToCoreUnitGroup(UnitGroup unitGroup)
         {
             var result = new Goldenwood.Model.Units.UnitGroup
@@ -20,6 +25,11 @@ namespace GoldenwoodClient.Infrastructure
             return result;
         }
 
+        /// <summary>
+        /// This method is used for converting UnitGroup objects from Goldenwood project to GoldenwoodClient project
+        /// </summary>
+        /// <param name="unitGroup">Goldenwood's UnitGroup</param>
+        /// <returns>An equivalent instance of the GoldenwoodClient's UnitGroup</returns>
         public UnitGroup CoreUnitGroupToMauiUnitGroup(Goldenwood.Model.Units.UnitGroup unitGroup)
         {
             var result = new UnitGroup

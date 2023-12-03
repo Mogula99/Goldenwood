@@ -178,8 +178,12 @@ namespace GoldenwoodTests.Service
             var result = militaryService.Fight(1);
             Assert.False(result);
             Assert.True(enemyMock.Object.FirstOrDefault().Alive);
-            Assert.Equal(0, weakPlayerMock.Object.FirstOrDefault().Army.UnitGroups.Count);
+            Assert.Equal(2, weakPlayerMock.Object.FirstOrDefault().Army.UnitGroups.Count);
             Assert.Equal(2, enemyMock.Object.FirstOrDefault().Army.UnitGroups.Count);
+            Assert.Equal(0, weakPlayerMock.Object.FirstOrDefault().Army.UnitGroups.ToArray()[0].UnitCount);
+            Assert.True(weakPlayerMock.Object.FirstOrDefault().Army.UnitGroups.ToArray()[0].Unit.Name == "Spearman");
+            Assert.Equal(0, weakPlayerMock.Object.FirstOrDefault().Army.UnitGroups.ToArray()[1].UnitCount);
+            Assert.True(weakPlayerMock.Object.FirstOrDefault().Army.UnitGroups.ToArray()[1].Unit.Name == "Archer");
             Assert.Equal(50, enemyMock.Object.FirstOrDefault().Army.UnitGroups.ToArray()[0].UnitCount);
             Assert.True(enemyMock.Object.FirstOrDefault().Army.UnitGroups.ToArray()[0].Unit.Name == "Spearman");
             Assert.Equal(5, enemyMock.Object.FirstOrDefault().Army.UnitGroups.ToArray()[1].UnitCount);
@@ -205,8 +209,12 @@ namespace GoldenwoodTests.Service
             var result = militaryService.Fight(1);
             Assert.False(result);
             Assert.True(enemyMock.Object.FirstOrDefault().Alive);
-            Assert.Equal(0, mediocrePlayerMock.Object.FirstOrDefault().Army.UnitGroups.Count);
+            Assert.Equal(2, mediocrePlayerMock.Object.FirstOrDefault().Army.UnitGroups.Count);
             Assert.Equal(2, enemyMock.Object.FirstOrDefault().Army.UnitGroups.Count);
+            Assert.Equal(0, mediocrePlayerMock.Object.FirstOrDefault().Army.UnitGroups.ToArray()[0].UnitCount);
+            Assert.True(mediocrePlayerMock.Object.FirstOrDefault().Army.UnitGroups.ToArray()[0].Unit.Name == "Spearman");
+            Assert.Equal(0, mediocrePlayerMock.Object.FirstOrDefault().Army.UnitGroups.ToArray()[1].UnitCount);
+            Assert.True(mediocrePlayerMock.Object.FirstOrDefault().Army.UnitGroups.ToArray()[1].Unit.Name == "Archer");
             Assert.Equal(50, enemyMock.Object.FirstOrDefault().Army.UnitGroups.ToArray()[0].UnitCount);
             Assert.True(enemyMock.Object.FirstOrDefault().Army.UnitGroups.ToArray()[0].Unit.Name == "Spearman");
             Assert.Equal(5, enemyMock.Object.FirstOrDefault().Army.UnitGroups.ToArray()[1].UnitCount);

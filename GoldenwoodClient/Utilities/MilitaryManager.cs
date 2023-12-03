@@ -21,6 +21,11 @@ namespace GoldenwoodClient.Utilities
             this.alertManager = alertManager;
         }
 
+        /// <summary>
+        /// This method handles the recruitment of units. It checks if the recruitment can be finished and then makes appropriate api calls.
+        /// </summary>
+        /// <param name="unitId">ID of the unit type that is to be recruited</param>
+        /// <returns>Nothing</returns>
         public async Task RecruitUnit(int unitId)
         {
             ICollection<UnitGroup> playerUnitGroups = await militaryApi.PlayerUnits();
@@ -36,30 +41,35 @@ namespace GoldenwoodClient.Utilities
                 return;
             }
 
-            int count = -1;
-            bool parseResult = int.TryParse(recruitNumberString, out count);
-            if (parseResult == false || count < 0)
+            int recruitCount = -1;
+            bool parseResult = int.TryParse(recruitNumberString, out recruitCount);
+            if (parseResult == false || recruitCount < 0)
             {
                 alertManager.SendInvalidNumberAlert();
                 return;
             }
 
-            if(count == 0)
+            if(recruitCount == 0)
             {
                 return;
             }
 
-            bool doesHaveEnoughResources = await militaryApi.DoesHaveEnoughResources(unitId, count);
+            bool doesHaveEnoughResources = await militaryApi.DoesHaveEnoughResources(unitId, recruitCount);
             if(!doesHaveEnoughResources)
             {
                 alertManager.SendNotEnoughResourcesAlert();
                 return;
             }
 
-            ICollection<UnitGroup> newPlayerUnitGroups = await militaryApi.Recruit(unitId, count);
-            CheckNewUnits(unitId, count, playerUnitGroups, newPlayerUnitGroups);
+            ICollection<UnitGroup> newPlayerUnitGroups = await militaryApi.Recruit(unitId, recruitCount);
+            CheckNewUnits(unitId, recruitCount, playerUnitGroups, newPlayerUnitGroups);
         }
 
+        /// <summary>
+        /// This method handles the fight with an enemy. It asks the player about the fight and then makes the appropriate api calls.
+        /// </summary>
+        /// <param name="enemyId">ID of the enemy selected for a fight</param>
+        /// <returns>True if the player succeded in the fight. False otherwise.</returns>
         public async Task<bool> FightEnemy(int enemyId)
         {
             ICollection<UnitGroup> enemyUnitGroups = await militaryApi.EnemyUnits(enemyId);
@@ -82,7 +92,14 @@ namespace GoldenwoodClient.Utilities
             return false;
         }
 
-        private void CheckNewUnits(int unitId, int recruitedUnits, ICollection<UnitGroup> playerUnitGroups, ICollection<UnitGroup> newPlayerUnitGroups)
+        /// <summary>
+        /// This method checks if the newly recruited units have been successfully added to the player's army.
+        /// </summary>
+        /// <param name="unitId">ID of the recruited units</param>
+        /// <param name="recruitedUnitsCount">Number of recruited units</param>
+        /// <param name="playerUnitGroups">Player's units before the recruitment</param>
+        /// <param name="newPlayerUnitGroups">Player's units after the recruitment</param>
+        private void CheckNewUnits(int unitId, int recruitedUnitsCount, ICollection<UnitGroup> playerUnitGroups, ICollection<UnitGroup> newPlayerUnitGroups)
         {
             int oldUnitsCount = -1;
             int newUnitsCount = -1;
@@ -104,7 +121,7 @@ namespace GoldenwoodClient.Utilities
                 }
             }
 
-            if(oldUnitsCount + recruitedUnits != newUnitsCount)
+            if(oldUnitsCount + recruitedUnitsCount != newUnitsCount)
             {
                 alertManager.SendRecruitmentFailureAlert();
             }
@@ -113,6 +130,5 @@ namespace GoldenwoodClient.Utilities
                 alertManager.SendRecruitmentSuccessAlert();
             }
         }
-
     }
 }

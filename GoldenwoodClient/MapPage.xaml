@@ -36,6 +36,7 @@
             </HorizontalStackLayout>
         </HorizontalStackLayout>
 
+        <!-- Available enemies -->
         <HorizontalStackLayout HorizontalOptions="Center">
             <VerticalStackLayout HorizontalOptions="Start">
                 <ImageButton Source="enemy.png"
