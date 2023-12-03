@@ -2,49 +2,111 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GoldenwoodClient.MapPage"
-             Title="MapPage"
+             Title=""
+             Background="LightGreen"
              xmlns:viewmodels="clr-namespace:GoldenwoodClient.ViewModels"
              x:DataType="viewmodels:MapVm">
-    <VerticalStackLayout Spacing="100">
+    <VerticalStackLayout Spacing="10">
         <!-- Top Navigation bar -->
         <HorizontalStackLayout Spacing="50"
                                HorizontalOptions="Center" 
                                VerticalOptions="Start"
-                               BackgroundColor="DarkGrey">
-            <VerticalStackLayout Spacing="10">
+                               BackgroundColor="LightGray">
+            <VerticalStackLayout Spacing="5"
+                                 Padding="20, 5, 0, 5">
                 <HorizontalStackLayout Spacing="5">
                     <Label Text="Gold: "></Label>
                     <Label Text="{Binding PlayerResources.GoldAmount}"></Label>
                 </HorizontalStackLayout>
-                <HorizontalStackLayout>
+                <HorizontalStackLayout Spacing="5">
                     <Label Text="Wood: "></Label>
                     <Label Text="{Binding PlayerResources.WoodAmount}"></Label>
                 </HorizontalStackLayout>
             </VerticalStackLayout>
-            <Button Text="Surroundings"
+            <HorizontalStackLayout Spacing="50"
+                                   Padding="0,5,20,5">
+                <Button Text="Surroundings"
+                    Style="{StaticResource notActivePageButton}"
                     Command="{Binding GoToSurroundingsCommand}"></Button>
-            <Button Text="Village"
+                <Button Text="Village"
+                    Style="{StaticResource notActivePageButton}"
                     Command="{Binding GoToVillageCommand}"></Button>
-            <Button Text="Map" Style="{StaticResource currentPageButton}"></Button>
+                <Button Text="Map"
+                    Style="{StaticResource currentPageButton}"></Button>
+            </HorizontalStackLayout>
         </HorizontalStackLayout>
 
-        <HorizontalStackLayout>
-            <Button BackgroundColor="Green"
-                    Text="Green enemy"
-                    Command="{Binding FightEnemyCommand}"
-                    CommandParameter="1"></Button>
-            <Button BackgroundColor="Yellow" Text="Yellow enemy"                   
-                    Command="{Binding FightEnemyCommand}"
-                    CommandParameter="2"></Button>
-            <Button BackgroundColor="Orange" Text="Orange enemy"                    
-                    Command="{Binding FightEnemyCommand}"
-                    CommandParameter="3"></Button>
-            <Button BackgroundColor="Red" Text="Red enemy"                    
-                    Command="{Binding FightEnemyCommand}"
-                    CommandParameter="4"></Button>
-            <Button BackgroundColor="DarkGrey" Text="Black enemy"                    
-                    Command="{Binding FightEnemyCommand}"
-                    CommandParameter="5"></Button>
+        <HorizontalStackLayout HorizontalOptions="Center">
+            <VerticalStackLayout HorizontalOptions="Start">
+                <ImageButton Source="enemy.png"
+                                     Margin="20"
+                                     WidthRequest="150"
+                                     HeightRequest="150"
+                                     BackgroundColor="Green"
+                             IsVisible="{Binding IsEnemyAlive[0]}"
+                                     Command="{Binding FightEnemyCommand}"
+                                     CommandParameter="1"></ImageButton>
+                <Label Text="Green Enemy"
+                               HorizontalOptions="Center"
+                       IsVisible="{Binding IsEnemyAlive[0]}"
+                               FontSize="Small"></Label>
+            </VerticalStackLayout>
+            <VerticalStackLayout HorizontalOptions="Start">
+                <ImageButton Source="enemy.png"
+                                     Margin="20"
+                                     WidthRequest="150"
+                                     HeightRequest="150"
+                                     BackgroundColor="Yellow"
+                             IsVisible="{Binding IsEnemyAlive[1]}"
+                                     Command="{Binding FightEnemyCommand}"
+                                     CommandParameter="2"></ImageButton>
+                <Label Text="Yellow Enemy"
+                               HorizontalOptions="Center"
+                       IsVisible="{Binding IsEnemyAlive[1]}"
+                               FontSize="Small"></Label>
+            </VerticalStackLayout>
+            <VerticalStackLayout HorizontalOptions="Start">
+                <ImageButton Source="enemy.png"
+                                     Margin="20"
+                                     WidthRequest="150"
+                                     HeightRequest="150"
+                                     BackgroundColor="Orange"
+                             IsVisible="{Binding IsEnemyAlive[2]}"
+                                     Command="{Binding FightEnemyCommand}"
+                                     CommandParameter="3"></ImageButton>
+                <Label Text="Orange Enemy"
+                       IsVisible="{Binding IsEnemyAlive[2]}"
+                               HorizontalOptions="Center"
+                               FontSize="Small"></Label>
+            </VerticalStackLayout>
+            <VerticalStackLayout HorizontalOptions="Start">
+                <ImageButton Source="enemy.png"
+                                     Margin="20"
+                                     WidthRequest="150"
+                                     HeightRequest="150"
+                                     BackgroundColor="Red"
+                             IsVisible="{Binding IsEnemyAlive[3]}"
+                                     Command="{Binding FightEnemyCommand}"
+                                     CommandParameter="4"></ImageButton>
+                <Label Text="Red Enemy"
+                               HorizontalOptions="Center"
+                       IsVisible="{Binding IsEnemyAlive[3]}"
+                               FontSize="Small"></Label>
+            </VerticalStackLayout>
+            <VerticalStackLayout HorizontalOptions="Start">
+                <ImageButton Source="enemy.png"
+                                     Margin="20"
+                                     WidthRequest="150"
+                                     HeightRequest="150"
+                                     BackgroundColor="DarkGray"
+                             IsVisible="{Binding IsEnemyAlive[4]}"
+                                     Command="{Binding FightEnemyCommand}"
+                                     CommandParameter="5"></ImageButton>
+                <Label Text="Black Enemy"
+                               HorizontalOptions="Center"
+                       IsVisible="{Binding IsEnemyAlive[4]}"
+                               FontSize="Small"></Label>
+            </VerticalStackLayout>
         </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

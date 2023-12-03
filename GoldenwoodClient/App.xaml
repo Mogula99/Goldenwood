@@ -8,6 +8,9 @@
             <Style x:Key="currentPageButton" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="Blue"></Setter>
             </Style>
+            <Style x:Key="notActivePageButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="DarkGray"></Setter>
+            </Style>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />

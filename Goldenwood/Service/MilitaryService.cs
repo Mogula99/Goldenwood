@@ -38,17 +38,20 @@ namespace Goldenwood.Service
             return found;
         }
 
+        public Unit GetUnit(int unitId)
+        {
+            var foundUnit = dbContext.Unit.Where(x => x.Id == unitId).FirstOrDefault();
+            return foundUnit;
+        }
+
         public void RecruitUnits(int wantedUnitId, int wantedUnitCount)
         {
             var foundUnit = dbContext.Unit.Where(x => x.Id == wantedUnitId).FirstOrDefault();
             //Wanted unit was found
             if (foundUnit != null)
             {
-                var goldNeeded = foundUnit.GoldCost * wantedUnitCount;
-                var woodNeeded = foundUnit.WoodCost * wantedUnitCount;
-                var currentResources = resourcesService.GetCurrentResourcesAmount();
                 //Player has enough resources to build units
-                if (currentResources.GoldAmount >= goldNeeded && currentResources.WoodAmount >= woodNeeded)
+                if (PlayerHasEnoughResources(wantedUnitId, wantedUnitCount))
                 {
                     var playersArmyId = Constants.PlayerArmyId;
                     var playersArmy = dbContext.Army.Where(x => x.Id == playersArmyId).FirstOrDefault();
@@ -74,7 +77,8 @@ namespace Goldenwood.Service
                         }
 
                         //Now we have tu subtract the used resources
-                        resourcesService.AddResources(new ResourcesRecord(-goldNeeded, -woodNeeded));
+                        var neededResources = GetNeededResources(foundUnit, wantedUnitCount);
+                        resourcesService.AddResources(new ResourcesRecord(-neededResources.GoldAmount, -neededResources.WoodAmount));
                         dbContext.SaveChanges();
                     }
                 }
@@ -116,6 +120,24 @@ namespace Goldenwood.Service
         {
             var playersArmy = dbContext.Army.Where(x => x.Id == Constants.PlayerArmyId).FirstOrDefault();
             return playersArmy == null ? new List<UnitGroup>() : playersArmy.UnitGroups;
+        }
+
+        public bool PlayerHasEnoughResources(int unitId, int wantedCount)
+        {
+            var wantedUnit = dbContext.Unit.Where(x => x.Id == unitId).FirstOrDefault();
+            if (wantedUnit == null)
+            {
+                return false;
+            }
+
+            var neededResources = GetNeededResources(wantedUnit, wantedCount);
+            var currentResources = resourcesService.GetCurrentResourcesAmount();
+            return currentResources.GoldAmount >= neededResources.GoldAmount && currentResources.WoodAmount >= neededResources.WoodAmount;
+        }
+
+        private ResourcesRecord GetNeededResources(Unit wantedUnit, int wantedCount)
+        {
+            return new ResourcesRecord(wantedUnit.GoldCost * wantedCount, wantedUnit.WoodCost * wantedCount);
         }
 
         //This method checks if player's army already has an unit group for a specific unit

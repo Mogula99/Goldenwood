@@ -15,12 +15,16 @@ namespace GoldenwoodClient.ExternalApis
 
         [Get("/Military/Units/Enemy")]
         Task<ICollection<UnitGroup>> EnemyUnits(int enemyId);
+        [Get("/Military/Unit")]
+        Task<Unit> GetUnit(int unitId);
 
         [Get("/Military/Recruit")]
         Task<bool> CanBeRecruited(int unitId);
 
         [Post("/Military/Recruit")]
         Task<ICollection<UnitGroup>> Recruit(int unitId, int recruitCount);
+        [Get("/Military/Recruit/Resources")]
+        Task<bool> DoesHaveEnoughResources(int unitId, int recruitCount);
 
         [Post("/Military/Fight")]
         Task<bool> Fight(int enemyId);

@@ -43,7 +43,7 @@ namespace GoldenwoodClient.ViewModels
 
             var timer = Application.Current.Dispatcher.CreateTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += (s, e) => LoadDataAsync();
+            timer.Tick += async (s, e) => await LoadDataAsync();
             timer.Start();
 
             LoadDataAsync();
@@ -60,7 +60,7 @@ namespace GoldenwoodClient.ViewModels
         async Task Tick()
         {
             await resourcesApi.UpdateResourcesAfterTick();
-            LoadDataAsync();
+            await LoadDataAsync();
         }
 
         [RelayCommand]
@@ -82,10 +82,10 @@ namespace GoldenwoodClient.ViewModels
         }
 
         [RelayCommand]
-        async void BuildOrUpgrade(string buildingName)
+        async Task BuildOrUpgrade(string buildingName)
         {
             await buildingManager.BuildOrUpgrade(buildingName);
-            LoadDataAsync();
+            await LoadDataAsync();
         }
     }
 }

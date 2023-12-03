@@ -103,7 +103,7 @@ namespace GoldenwoodApi.Infrastructure
                 new MilitaryBuilding { Id = 5, Name = Constants.StablesBuildingName, Level = 1, CreatableUnit = unitTypes[4], IsBuilt = false, GoldCost = 1000, WoodCost = 300 },
                 new MilitaryBuilding { Id = 6, Name = Constants.StablesBuildingName, Level = 2, CreatableUnit = unitTypes[5], IsBuilt = false, GoldCost = 1500, WoodCost = 400 },
             };
-            var player = new Player { Id = 1, GoldAmount = 0, WoodAmount = 0, Army = armies[0] };
+            var player = new Player { Id = 1, GoldAmount = 500, WoodAmount = 250, Army = armies[0] };
 
 
             var context = applicationBuilder.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContext>();

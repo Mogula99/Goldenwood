@@ -35,6 +35,7 @@ namespace GoldenwoodClient.ViewModels
         public List<string> UnitNames { get; set; } = Constants.UnitNames;
 
         [ObservableProperty] private int secondsToTick = 10;
+        [ObservableProperty] private int tickInterval = 10;
 
         [ObservableProperty] private ObservableCollection<UnitGroup> playerUnitGroups;
         [ObservableProperty] private ObservableCollection<bool> isUnitRecruitable;
@@ -77,6 +78,7 @@ namespace GoldenwoodClient.ViewModels
             }
             IsUnitRecruitable = new ObservableCollection<bool>(isUnitRecruitable);
 
+            TickInterval = await resourcesApi.GetTickInterval();
 
             var playerResourcesFromApi = await resourcesApi.GetAmount();
             PlayerResources = resourcesRecordConverter.CoreResourcesRecordToMauiResourcesRecord(playerResourcesFromApi);
@@ -97,8 +99,8 @@ namespace GoldenwoodClient.ViewModels
             if(SecondsToTick <= 0)
             {
                 await resourcesApi.UpdateResourcesAfterTick();
-                SecondsToTick = 10;
-                LoadDataAsync();
+                SecondsToTick = TickInterval;
+                await LoadDataAsync();
             }
         }
 
@@ -117,18 +119,18 @@ namespace GoldenwoodClient.ViewModels
         }
 
         [RelayCommand]
-        async void BuildOrUpgrade(string buildingName)
+        async Task BuildOrUpgrade(string buildingName)
         {
             await buildingManager.BuildOrUpgrade(buildingName);
-            LoadDataAsync();
+            await LoadDataAsync();
         }
 
         [RelayCommand]
-        async void RecruitUnits(string unitIdString)
+        async Task RecruitUnits(string unitIdString)
         {
             int unitId = int.Parse(unitIdString);
             await militaryManager.RecruitUnit(unitId);
-            LoadDataAsync();
+            await LoadDataAsync();
         }
     }
 }

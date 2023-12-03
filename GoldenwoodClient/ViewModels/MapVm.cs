@@ -6,6 +6,7 @@ using GoldenwoodClient.Models;
 using GoldenwoodClient.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,8 @@ namespace GoldenwoodClient.ViewModels
         private readonly MilitaryManager militaryManager;
 
         private readonly ResourcesRecordConverter resourcesRecordConverter;
+
+        [ObservableProperty] private ObservableCollection<bool> isEnemyAlive = new ObservableCollection<bool> { true, true, true, true, true };
 
         [ObservableProperty] private ResourcesRecord playerResources = new ResourcesRecord();
 
@@ -57,8 +60,14 @@ namespace GoldenwoodClient.ViewModels
         async Task FightEnemy(string enemyIdString)
         {
             int enemyId = int.Parse(enemyIdString);
-            await militaryManager.FightEnemy(enemyId);
-            LoadDataAsync();
+            bool enemyDefeated = await militaryManager.FightEnemy(enemyId);
+            if (enemyDefeated)
+            {
+                List<bool> aliveEnemies = new List<bool>(IsEnemyAlive);
+                aliveEnemies[enemyId - 1] = false;
+                IsEnemyAlive = new ObservableCollection<bool>(aliveEnemies);
+            }
+            await LoadDataAsync();
         }
 
         public async void ApplyQueryAttributes(IDictionary<string, object> query)

@@ -45,6 +45,17 @@ namespace GoldenwoodApi.Controllers
         }
 
         /// <summary>
+        /// Gets a unit with specified id 
+        /// </summary>
+        /// <param name="unitId">Id of the unit</param>
+        /// <response code="200">Returns a unit which id was specified in the request</response>
+        [HttpGet("Unit")]
+        public Unit GetUnit(int unitId)
+        {
+            return militaryService.GetUnit(unitId);
+        }
+
+        /// <summary>
         /// Gets the information about whether a specified unit can be recruited (required buildings are already built) at this time or not.
         /// </summary>
         /// <param name="unitId">Id of the unit</param>
@@ -53,6 +64,18 @@ namespace GoldenwoodApi.Controllers
         public bool CanBeRecruited(int unitId)
         {
             return militaryService.CanBeRecruited(unitId);
+        }
+
+        /// <summary>
+        /// Gets the information about whether the player does have enough resources to recruit specified number of specified units
+        /// </summary>
+        /// <param name="unitId">Id of the unit the player wants to recruit</param>
+        /// <param name="recruitCount">Number of the previously specified units the player wants to recruit</param>
+        /// <response code="200">Returns true if the player does have enough resources to recruit those units. False otherwise.</response>
+        [HttpGet("Recruit/Resources")]
+        public bool DoesHaveEnoughResources(int unitId, int recruitCount)
+        {
+            return militaryService.PlayerHasEnoughResources(unitId, recruitCount);
         }
 
         /// <summary>

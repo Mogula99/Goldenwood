@@ -1,6 +1,6 @@
-﻿using GoldenwoodClient.ExternalApis;
+﻿using Goldenwood.Utilities;
+using GoldenwoodClient.ExternalApis;
 using GoldenwoodClient.Infrastructure;
-using GoldenwoodClient.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,24 +10,17 @@ using System.Threading.Tasks;
 namespace GoldenwoodClient.Utilities
 {
     public class AlertManager
-
-
     {
-        public AlertManager()
-        {
-        }
-
-
-
         public async Task<bool> SendBuildingQuestionAlert(string buildingName, int nextBuildingLevel, ResourcesRecord neededResources)
         {
             string question = CreateUpgradeQuestion(buildingName, nextBuildingLevel, neededResources);
             return await Application.Current.MainPage.DisplayAlert("Build or upgrade", question, "Yes", "No");
         }
 
-        public async Task<string> SendRecruitAlert(string unitName)
+        public async Task<string> SendRecruitAlert(string unitName, ResourcesRecord neededResources)
         {
-            string question = "How many " + unitName + " do you want to recruit?";
+            string question = "How many " + unitName + " do you want to recruit?\n";
+            question += "1 " + unitName + " costs " + neededResources.GoldAmount + " gold and " + neededResources.WoodAmount + " wood.\n";
             return await Application.Current.MainPage.DisplayPromptAsync("Recruitment", question);
         }
 

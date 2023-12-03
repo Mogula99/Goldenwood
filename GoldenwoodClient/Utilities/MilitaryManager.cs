@@ -24,8 +24,17 @@ namespace GoldenwoodClient.Utilities
         public async Task RecruitUnit(int unitId)
         {
             ICollection<UnitGroup> playerUnitGroups = await militaryApi.PlayerUnits();
-            string unitName = Constants.UnitNames[unitId-1];
-            string recruitNumberString = await alertManager.SendRecruitAlert(unitName);
+
+            Unit recruitableUnit = await militaryApi.GetUnit(unitId);
+
+            ResourcesRecord neededResources = new ResourcesRecord(recruitableUnit.GoldCost, recruitableUnit.WoodCost);
+
+            string unitName = Constants.UnitNames[unitId - 1];
+            string recruitNumberString = await alertManager.SendRecruitAlert(unitName, neededResources);
+            if(recruitNumberString == null)
+            {
+                return;
+            }
 
             int count = -1;
             bool parseResult = int.TryParse(recruitNumberString, out count);
@@ -35,11 +44,23 @@ namespace GoldenwoodClient.Utilities
                 return;
             }
 
+            if(count == 0)
+            {
+                return;
+            }
+
+            bool doesHaveEnoughResources = await militaryApi.DoesHaveEnoughResources(unitId, count);
+            if(!doesHaveEnoughResources)
+            {
+                alertManager.SendNotEnoughResourcesAlert();
+                return;
+            }
+
             ICollection<UnitGroup> newPlayerUnitGroups = await militaryApi.Recruit(unitId, count);
             CheckNewUnits(unitId, count, playerUnitGroups, newPlayerUnitGroups);
         }
 
-        public async Task FightEnemy(int enemyId)
+        public async Task<bool> FightEnemy(int enemyId)
         {
             ICollection<UnitGroup> enemyUnitGroups = await militaryApi.EnemyUnits(enemyId);
             string enemyName = Constants.EnemyNames[enemyId-1];
@@ -50,12 +71,15 @@ namespace GoldenwoodClient.Utilities
                 if(result == true)
                 {
                     alertManager.SendFightSuccessAlert();
+                    return true;
                 }
                 else
                 {
                     alertManager.SendFightFailureAlert();
+                    return false;
                 }
             }
+            return false;
         }
 
         private void CheckNewUnits(int unitId, int recruitedUnits, ICollection<UnitGroup> playerUnitGroups, ICollection<UnitGroup> newPlayerUnitGroups)

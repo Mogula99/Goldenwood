@@ -28,31 +28,35 @@ namespace GoldenwoodClient.Utilities
 
         public async Task BuildOrUpgrade(string buildingName)
         {
-            int currentBuildingLevel = await buildingApi.GetBuildingLevel(buildingName);
-            var neededResourcesFromApi = await buildingApi.GetNeededResources(buildingName, currentBuildingLevel + 1);
-            GoldenwoodClient.Models.ResourcesRecord neededResources = resourcesRecordConverter.CoreResourcesRecordToMauiResourcesRecord(neededResourcesFromApi);
+            bool canBeUpgraded = await buildingApi.GetIsBuildable(buildingName);
 
-            bool buildingAnswer = await alertManager.SendBuildingQuestionAlert(buildingName, currentBuildingLevel + 1, neededResources);
-            if (buildingAnswer == true)
+            if (canBeUpgraded)
             {
-                //Check that the player does have enough resources
-                var playerResourcesFromApi = await resourcesApi.GetAmount();
-                var playerResources = resourcesRecordConverter.CoreResourcesRecordToMauiResourcesRecord(playerResourcesFromApi);
-                if (playerResources.GoldAmount < neededResources.GoldAmount || playerResources.WoodAmount < neededResources.WoodAmount)
+                int currentBuildingLevel = await buildingApi.GetBuildingLevel(buildingName);
+                var neededResources = await buildingApi.GetNeededResources(buildingName, currentBuildingLevel + 1);
+
+                bool buildingAnswer = await alertManager.SendBuildingQuestionAlert(buildingName, currentBuildingLevel + 1, neededResources);
+                if (buildingAnswer == true)
                 {
-                    alertManager.SendNotEnoughResourcesAlert();
-                    return;
-                }
-                else
-                {
-                    bool result = await buildingApi.BuildOrUpgrade(buildingName);
-                    if (result == true)
+                    //Check that the player does have enough resources
+                    var playerResourcesFromApi = await resourcesApi.GetAmount();
+                    var playerResources = resourcesRecordConverter.CoreResourcesRecordToMauiResourcesRecord(playerResourcesFromApi);
+                    if (playerResources.GoldAmount < neededResources.GoldAmount || playerResources.WoodAmount < neededResources.WoodAmount)
                     {
-                        alertManager.SendBuildingSuccessfulAlert();
+                        alertManager.SendNotEnoughResourcesAlert();
+                        return;
                     }
                     else
                     {
-                        alertManager.SendBuildingFailureAlert();
+                        bool result = await buildingApi.BuildOrUpgrade(buildingName);
+                        if (result == true)
+                        {
+                            alertManager.SendBuildingSuccessfulAlert();
+                        }
+                        else
+                        {
+                            alertManager.SendBuildingFailureAlert();
+                        }
                     }
                 }
             }

@@ -6,127 +6,207 @@ xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 xmlns:models="clr-namespace:GoldenwoodClient.Models"
 xmlns:viewmodels="clr-namespace:GoldenwoodClient.ViewModels"
 x:DataType="viewmodels:MainVm"
-xmlns:shared="clr-namespace:GoldenwoodClient">
-
+xmlns:shared="clr-namespace:GoldenwoodClient"
+Title=""
+BackgroundColor="LightGreen">
     <ContentPage.Resources>
         <Color x:Key="PageTextColor">Black</Color>
+        <Color x:Key="BarBackgroundColor">LightGray</Color>
         <x:String x:Key="VillageString">Village</x:String>
     </ContentPage.Resources>
-    <VerticalStackLayout Spacing="100">
+    <VerticalStackLayout Spacing="10">
         <!-- Top Navigation bar -->
         <HorizontalStackLayout Spacing="50"
                                HorizontalOptions="Center" 
                                VerticalOptions="Start"
-                               BackgroundColor="DarkGrey">
-            <VerticalStackLayout Spacing="10">
+                               BackgroundColor="{StaticResource BarBackgroundColor}">
+            <VerticalStackLayout Spacing="5" 
+                                 Padding="20, 5, 0, 5">
                 <HorizontalStackLayout Spacing="5">
-                    <Label Text="Gold: "></Label>
+                    <Label Text="Gold:"></Label>
                     <Label Text="{Binding PlayerResources.GoldAmount}"></Label>
                 </HorizontalStackLayout>
-                <HorizontalStackLayout>
+                <HorizontalStackLayout Spacing="5">
                     <Label Text="Wood: "></Label>
                     <Label Text="{Binding PlayerResources.WoodAmount}"></Label>
                 </HorizontalStackLayout>
             </VerticalStackLayout>
-            <Button Text="Surroundings" Style="{StaticResource currentPageButton}"></Button>
-            <Button Text="{StaticResource Key=VillageString}"
-                    TextColor="{StaticResource PageTextColor}"
+            <HorizontalStackLayout Spacing="50"
+                                   Padding="0,5,20,5">
+                <Button Text="Surroundings" Style="{StaticResource currentPageButton}"></Button>
+                <Button Text="{StaticResource Key=VillageString}"
+                    Style="{StaticResource notActivePageButton}"
                     Command="{Binding GoToVillageCommand}"></Button>
-            <Button Text="Map"
+                <Button Text="Map"
+                    Style="{StaticResource notActivePageButton}"
                     Command="{Binding GoToMapCommand}">
-            </Button>
+                </Button>
+            </HorizontalStackLayout>
+
         </HorizontalStackLayout>
 
         <!-- Surroundings -->
-        <HorizontalStackLayout VerticalOptions="Center" BackgroundColor="Green">
-
+        <HorizontalStackLayout VerticalOptions="Start" Spacing="100">
             <!-- Mine, woodcutter and the village -->
-            <VerticalStackLayout>
-                <HorizontalStackLayout>
-                    <Button Text="Gold Mine"
-                            Command="{Binding BuildOrUpgradeCommand}"
-                            CommandParameter="{Binding GoldMineName}"></Button>
-                    <Button Text="Woodcutter's camp"
-                            Command="{Binding BuildOrUpgradeCommand}"
-                            CommandParameter="{Binding LoggingCampName}"></Button>
+            <VerticalStackLayout HorizontalOptions="Start">
+                <HorizontalStackLayout Spacing="250">
+                    <VerticalStackLayout HorizontalOptions="Start">
+                        <ImageButton Source="gold_mine.png"
+                                     Margin="20"
+                                     WidthRequest="150"
+                                     HeightRequest="150"
+                                     BackgroundColor="White"
+                                     Command="{Binding BuildOrUpgradeCommand}"
+                                     CommandParameter="{Binding GoldMineName}"></ImageButton>
+                        <Label Text="{Binding GoldMineName}"
+                               HorizontalOptions="Center"
+                               FontSize="Small"></Label>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout HorizontalOptions="End">
+                        <ImageButton Source="logging_camp.png"
+                                     Margin="20"
+                                     WidthRequest="150"
+                                     HeightRequest="150"
+                                     BackgroundColor="White"
+                                     Command="{Binding BuildOrUpgradeCommand}"
+                                     CommandParameter="{Binding LoggingCampName}"></ImageButton>
+                        <Label Text="{Binding LoggingCampName}"
+                               HorizontalOptions="Center"
+                               FontSize="Small"></Label>
+                    </VerticalStackLayout>
                 </HorizontalStackLayout>
-                <Button HorizontalOptions="Start"
-                   HeightRequest="500"
-                   WidthRequest="500"
-                   Text="Village"
-                   BackgroundColor="Blue"
-                   Command="{Binding GoToVillageCommand}"></Button>
+                <VerticalStackLayout HorizontalOptions="Center">
+                    <ImageButton Source="village.png"
+                                 Margin="20"
+                                 WidthRequest="350"
+                                 HeightRequest="350"
+                                 Command="{Binding GoToVillageCommand}"
+                                 BackgroundColor="White"></ImageButton>
+                    <Label Text="Village"
+                           Margin="20"
+                           HorizontalOptions="Center"
+                           FontSize="Small"></Label>
+                </VerticalStackLayout>
             </VerticalStackLayout>
 
             <!-- Right panel -->
-            <VerticalStackLayout>
+            <VerticalStackLayout HorizontalOptions="End"
+                                 BackgroundColor="{StaticResource BarBackgroundColor}"
+                                 Spacing="50"
+                                 Margin="50">
                 <!-- Ticks and resources income -->
-                <VerticalStackLayout>
+                <VerticalStackLayout HorizontalOptions="Start" Spacing="10" Margin="10">
                     <HorizontalStackLayout>
-                        <Label Text="Tick in: "></Label>
+                        <Label Text="Tick in:   "></Label>
                         <Label Text="{Binding SecondsToTick}"></Label>
+                        <Label Text="("></Label>
+                        <Label Text="{Binding TickInterval}"></Label>
+                        <Label Text=")"></Label>
+
                     </HorizontalStackLayout>
                     <HorizontalStackLayout>
-                        <Label Text="Gold: "></Label>
+                        <Label Text="Gold:"></Label>
                         <Label Text="{Binding ResourcesIncome.GoldAmount}"></Label>
                         <Label Text="/tick"></Label>
                     </HorizontalStackLayout>
                     <HorizontalStackLayout>
-                        <Label Text="Wood: "></Label>
+                        <Label Text="Wood:"></Label>
                         <Label Text="{Binding ResourcesIncome.WoodAmount}"></Label>
                         <Label Text="/tick"></Label>
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
 
                 <!-- Military overview -->
-                <VerticalStackLayout HorizontalOptions="End">
-                    <HorizontalStackLayout BackgroundColor="Red" Spacing="5">
-                        <Label Text="{Binding UnitNames[0]}"></Label>
-                        <Label Text="{Binding PlayerUnitGroups[0].UnitCount}"></Label>
-                        <Button Text="Plus"
-                                IsVisible="{Binding IsUnitRecruitable[0]}"
-                                Command="{Binding RecruitUnitsCommand}"
-                                CommandParameter="1"></Button>
+                <VerticalStackLayout HorizontalOptions="End" Spacing="10" Margin="10">
+                    <HorizontalStackLayout Spacing="5">
+                        <Label Text="{Binding UnitNames[0]}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"></Label>
+                        <Label Text="{Binding PlayerUnitGroups[0].UnitCount}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"></Label>
+                        <ImageButton Source="plus_icon.png"
+                                     HeightRequest="16"
+                                     WidthRequest="16"
+                                     BackgroundColor="{StaticResource BarBackgroundColor}"
+                                     IsVisible="{Binding IsUnitRecruitable[0]}"
+                                     Command="{Binding RecruitUnitsCommand}"
+                                     CommandParameter="1"></ImageButton>
                     </HorizontalStackLayout>
-                    <HorizontalStackLayout BackgroundColor="Red" Spacing="5">
-                        <Label Text="{Binding UnitNames[1]}"></Label>
-                        <Label Text="{Binding PlayerUnitGroups[1].UnitCount}"></Label>
-                        <Button Text="Plus"
+                    <HorizontalStackLayout Spacing="5">
+                        <Label Text="{Binding UnitNames[1]}"                               
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"></Label>
+                        <Label Text="{Binding PlayerUnitGroups[1].UnitCount}"                               
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"></Label>
+                        <ImageButton Source="plus_icon.png"
+                                HeightRequest="16"
+                                WidthRequest="16"
+                                BackgroundColor="{StaticResource BarBackgroundColor}"
                                 IsVisible="{Binding IsUnitRecruitable[1]}"
                                 Command="{Binding RecruitUnitsCommand}"
-                                CommandParameter="2"></Button>
+                                CommandParameter="2"></ImageButton>
                     </HorizontalStackLayout>
-                    <HorizontalStackLayout BackgroundColor="Red" Spacing="5">
-                        <Label Text="{Binding UnitNames[2]}"></Label>
-                        <Label Text="{Binding PlayerUnitGroups[2].UnitCount}"></Label>
-                        <Button Text="Plus"
+                    <HorizontalStackLayout Spacing="5">
+                        <Label Text="{Binding UnitNames[2]}"                               
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"></Label>
+                        <Label Text="{Binding PlayerUnitGroups[2].UnitCount}"                               
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"></Label>
+                        <ImageButton Source="plus_icon.png"
+                                HeightRequest="16"
+                                WidthRequest="16"
+                                     BackgroundColor="{StaticResource BarBackgroundColor}"
                                 IsVisible="{Binding IsUnitRecruitable[2]}"
                                 Command="{Binding RecruitUnitsCommand}"
-                                CommandParameter="3"></Button>
+                                CommandParameter="3"></ImageButton>
                     </HorizontalStackLayout>
-                    <HorizontalStackLayout BackgroundColor="Red" Spacing="5">
-                        <Label Text="{Binding UnitNames[3]}"></Label>
-                        <Label Text="{Binding PlayerUnitGroups[3].UnitCount}"></Label>
-                        <Button Text="Plus"
+                    <HorizontalStackLayout Spacing="5">
+                        <Label Text="{Binding UnitNames[3]}"                               
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"></Label>
+                        <Label Text="{Binding PlayerUnitGroups[3].UnitCount}"                               
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"></Label>
+                        <ImageButton Source="plus_icon.png"
+                                HeightRequest="16"
+                                WidthRequest="16"
+                                     BackgroundColor="{StaticResource BarBackgroundColor}"
                                 IsVisible="{Binding IsUnitRecruitable[3]}"
                                 Command="{Binding RecruitUnitsCommand}"
-                                CommandParameter="4"></Button>
+                                CommandParameter="4"></ImageButton>
                     </HorizontalStackLayout>
-                    <HorizontalStackLayout BackgroundColor="Red" Spacing="5">
-                        <Label Text="{Binding UnitNames[4]}"></Label>
-                        <Label Text="{Binding PlayerUnitGroups[4].UnitCount}"></Label>
-                        <Button Text="Plus"
+                    <HorizontalStackLayout Spacing="5">
+                        <Label Text="{Binding UnitNames[4]}"                               
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"></Label>
+                        <Label Text="{Binding PlayerUnitGroups[4].UnitCount}"                               
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"></Label>
+                        <ImageButton Source="plus_icon.png"
+                                HeightRequest="16"
+                                WidthRequest="16"
+                                     BackgroundColor="{StaticResource BarBackgroundColor}"
                                 IsVisible="{Binding IsUnitRecruitable[4]}"
                                 Command="{Binding RecruitUnitsCommand}"
-                                CommandParameter="5"></Button>
+                                CommandParameter="5"></ImageButton>
                     </HorizontalStackLayout>
-                    <HorizontalStackLayout BackgroundColor="Red" Spacing="5">
-                        <Label Text="{Binding UnitNames[5]}"></Label>
-                        <Label Text="{Binding PlayerUnitGroups[5].UnitCount}"></Label>
-                        <Button Text="Plus"
+                    <HorizontalStackLayout Spacing="5">
+                        <Label Text="{Binding UnitNames[5]}"                               
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"></Label>
+                        <Label Text="{Binding PlayerUnitGroups[5].UnitCount}"                               
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"></Label>
+                        <ImageButton Source="plus_icon.png"
+                                HeightRequest="16"
+                                WidthRequest="16"
+                                     BackgroundColor="{StaticResource BarBackgroundColor}"
                                 IsVisible="{Binding IsUnitRecruitable[5]}"
                                 Command="{Binding RecruitUnitsCommand}"
-                                CommandParameter="6"></Button>
+                                CommandParameter="6"></ImageButton>
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
             </VerticalStackLayout>

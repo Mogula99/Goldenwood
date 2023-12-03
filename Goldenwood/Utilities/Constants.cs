@@ -23,11 +23,11 @@ namespace Goldenwood.Utilities
         public static readonly string FarmBuildingName = "Farm";
 
 
-        public static readonly string FirstEnemyName = "Green Village";
-        public static readonly string SecondEnemyName = "Yellow Village";
-        public static readonly string ThirdEnemyName = "Orange Village";
-        public static readonly string FourthEnemyName = "Red Village";
-        public static readonly string FifthEnemyName = "Black Village";
+        public static readonly string FirstEnemyName = "Green Enemy";
+        public static readonly string SecondEnemyName = "Yellow Enemy";
+        public static readonly string ThirdEnemyName = "Orange Enemy";
+        public static readonly string FourthEnemyName = "Red Enemy";
+        public static readonly string FifthEnemyName = "Black Enemy";
 
 
         public static readonly string FirstUnitName = "Spearman";
