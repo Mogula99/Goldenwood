@@ -20,7 +20,7 @@ namespace Goldenwood
         public virtual DbSet<Enemy> Enemy { get; set; }
         public virtual DbSet<Player> Player {  get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlite(@"Data Source = C:\Users\mach2\FIT\DNP\Goldenwood\Goldenwood\gamedata.db");
+        protected override void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlite(@"Data Source = gamedata.db");
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Player>().Navigation(e => e.Army).AutoInclude();
